@@ -1,0 +1,37 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Health Records" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row mb-4"><div class="col-12"><h1 class="fs-3 mb-1">{% trans "Health Records" %}</h1><p class="mb-0">{% trans "Monitor patient measurements, symptoms, and notes." %}</p></div></div>
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="card"><div class="card-body p-4">
+      <h2 class="fs-5 mb-3">{% trans "Add Health Record" %}</h2>
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-3"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>
+        {% endfor %}
+        {{ form.non_field_errors }}
+        <button type="submit" class="btn btn-primary">{% trans "Save Record" %}</button>
+      </form>
+    </div></div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card table-responsive">
+      <table class="table mb-0 table-hover text-nowrap">
+        <thead class="table-light"><tr><th>{% trans "Patient" %}</th><th>{% trans "Doctor" %}</th><th>{% trans "Temp" %}</th><th>{% trans "BP" %}</th><th>{% trans "Heart Rate" %}</th><th>{% trans "Date" %}</th><th></th></tr></thead>
+        <tbody>
+          {% for record in records %}
+            <tr><td>{{ record.patient.full_name }}</td><td>{{ record.doctor|default:"-" }}</td><td>{{ record.temperature|default:"-" }}</td><td>{{ record.blood_pressure|default:"-" }}</td><td>{{ record.heart_rate|default:"-" }}</td><td>{{ record.recorded_at|date:"M d, Y H:i" }}</td><td><a href="{% url 'health_record_edit' record.id %}"><i class="ti ti-edit"></i></a></td></tr>
+          {% empty %}
+            <tr><td colspan="7" class="text-secondary p-4">{% trans "No health records found." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

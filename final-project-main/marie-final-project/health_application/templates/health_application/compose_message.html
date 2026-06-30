@@ -1,0 +1,140 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Send Message to Doctor" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body p-4">
+        <h1 class="fs-3 mb-4">{% trans "Send Message to Doctor" %}</h1>
+        <form method="post" enctype="multipart/form-data" data-recorder-form>
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <div class="mb-3">
+            <label class="form-label" for="{{ form.patient.id_for_label }}">{% trans "Patient Information" %}</label>
+            {{ form.patient }}{{ form.patient.errors }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="{{ form.subject.id_for_label }}">{% trans "Subject" %}</label>
+            {{ form.subject }}{{ form.subject.errors }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="{{ form.message_type.id_for_label }}">{% trans "Message Type" %}</label>
+            {{ form.message_type }}{{ form.message_type.errors }}
+          </div>
+          <div class="mb-3" data-text-section>
+            <label class="form-label" for="{{ form.body.id_for_label }}">{% trans "Text Message" %}</label>
+            {{ form.body }}{{ form.body.errors }}
+          </div>
+          <div class="mb-4" data-voice-section>
+            <label class="form-label">{% trans "Record Voice Note" %}</label>
+            {{ form.voice_file }}
+            {{ form.voice_file.errors }}
+            <div class="border rounded-2 p-3">
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <button type="button" class="btn btn-outline-primary" data-record-start>{% trans "Start Recording" %}</button>
+                <button type="button" class="btn btn-outline-secondary" data-record-stop disabled>{% trans "Stop Recording" %}</button>
+                <button type="button" class="btn btn-outline-danger d-none" data-record-delete>{% trans "Delete / Record Again" %}</button>
+              </div>
+              <audio class="w-100 d-none" controls data-audio-preview></audio>
+              <p class="small text-secondary mb-0" data-record-status>Use your browser microphone to record audio. File uploads are disabled for voice notes.</p>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">{% trans "Send Message" %}</button>
+          <a href="{% url 'messages' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var form = document.querySelector("[data-recorder-form]");
+  if (!form) return;
+
+  var typeSelect = document.getElementById("id_message_type");
+  var textSection = form.querySelector("[data-text-section]");
+  var voiceSection = form.querySelector("[data-voice-section]");
+  var fileInput = document.getElementById("id_voice_file");
+  var startBtn = form.querySelector("[data-record-start]");
+  var stopBtn = form.querySelector("[data-record-stop]");
+  var deleteBtn = form.querySelector("[data-record-delete]");
+  var preview = form.querySelector("[data-audio-preview]");
+  var statusEl = form.querySelector("[data-record-status]");
+  var mediaRecorder = null;
+  var chunks = [];
+  var stream = null;
+
+  function syncSections() {
+    var value = typeSelect ? typeSelect.value : "TEXT";
+    textSection.classList.toggle("d-none", value === "VOICE");
+    voiceSection.classList.toggle("d-none", value === "TEXT");
+  }
+
+  function setRecordedFile(blob) {
+    var file = new File([blob], "voice-note.webm", { type: blob.type || "audio/webm" });
+    var transfer = new DataTransfer();
+    transfer.items.add(file);
+    fileInput.files = transfer.files;
+  }
+
+  function clearRecording() {
+    fileInput.value = "";
+    chunks = [];
+    if (preview.src) URL.revokeObjectURL(preview.src);
+    preview.removeAttribute("src");
+    preview.classList.add("d-none");
+    deleteBtn.classList.add("d-none");
+    statusEl.textContent = "Use your browser microphone to record audio. File uploads are disabled for voice notes.";
+  }
+
+  if (typeSelect) typeSelect.addEventListener("change", syncSections);
+  syncSections();
+
+  startBtn.addEventListener("click", async function () {
+    clearRecording();
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      statusEl.textContent = "This browser does not support in-app voice recording.";
+      return;
+    }
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      var preferredType = MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "";
+      mediaRecorder = preferredType ? new MediaRecorder(stream, { mimeType: preferredType }) : new MediaRecorder(stream);
+      mediaRecorder.addEventListener("dataavailable", function (event) {
+        if (event.data && event.data.size) chunks.push(event.data);
+      });
+      mediaRecorder.addEventListener("stop", function () {
+        var blob = new Blob(chunks, { type: preferredType || "audio/webm" });
+        setRecordedFile(blob);
+        preview.src = URL.createObjectURL(blob);
+        preview.classList.remove("d-none");
+        deleteBtn.classList.remove("d-none");
+        statusEl.textContent = "Voice note recorded. Preview it before sending.";
+        if (stream) stream.getTracks().forEach(function (track) { track.stop(); });
+      });
+      mediaRecorder.start();
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+      statusEl.textContent = "Recording...";
+    } catch (error) {
+      statusEl.textContent = "Microphone permission was denied or unavailable.";
+    }
+  });
+
+  stopBtn.addEventListener("click", function () {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+  });
+
+  deleteBtn.addEventListener("click", function () {
+    clearRecording();
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+  });
+});
+</script>
+{% endblock %}

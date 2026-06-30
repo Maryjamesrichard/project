@@ -1,0 +1,61 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Patients" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="fs-3 mb-1">{% trans "Patients" %}</h1>
+        <p class="mb-0">{% trans "Manage patient profiles and contact information" %}</p>
+      </div>
+      {% if request.user.profile.role != "DOCTOR" %}<div><a href="{% url 'patient_create' %}" class="btn btn-primary">{% trans "Add Patient" %}</a></div>{% endif %}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex gap-2 mb-3 flex-wrap justify-content-between">
+      <input type="text" class="form-control" placeholder="{% trans 'Search patients...' %}" style="max-width: 250px;">
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary"><i class="ti ti-filter"></i> {% trans "Filter" %}</button>
+        <button class="btn btn-outline-secondary"><i class="ti ti-file-excel"></i> Excel</button>
+        <button class="btn btn-outline-secondary"><i class="ti ti-file-pdf"></i> PDF</button>
+      </div>
+    </div>
+    <div class="card table-responsive">
+      <table class="table mb-0 text-nowrap table-hover">
+        <thead class="table-light border-light">
+          <tr><th>{% trans "Name" %}</th><th>{% trans "Gender" %}</th><th>{% trans "Age" %}</th><th>{% trans "Status" %}</th><th>{% trans "Doctor" %}</th><th>{% trans "Condition" %}</th><th>{% trans "Action" %}</th></tr>
+        </thead>
+        <tbody>
+          {% for patient in patients %}
+            <tr class="align-middle">
+              <td><a href="{% url 'patient_detail' patient.id %}"><span class="avatar avatar-md rounded bg-primary bg-opacity-10 text-primary me-3 d-inline-flex align-items-center justify-content-center"><i class="ti ti-user"></i></span>{{ patient.full_name }}</a></td>
+              <td>{{ patient.gender }}</td>
+              <td>{{ patient.age }}</td>
+              <td>{{ patient.status }}</td>
+              <td>{{ patient.assigned_doctor|default:"-" }}</td>
+              <td>{{ patient.medical_condition|default:"-" }}</td>
+              <td>
+                <a href="{% url 'patient_detail' patient.id %}"><i class="ti ti-eye"></i></a>
+                {% if request.user.profile.role != "DOCTOR" %}
+                  <a href="{% url 'patient_edit' patient.id %}" class="ms-2"><i class="ti ti-edit"></i></a>
+                  <form method="post" action="{% url 'patient_delete' patient.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link link-danger p-0 ms-2" onclick="return confirm('{% trans 'Delete this patient?' %}')"><i class="ti ti-trash"></i></button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="7" class="text-secondary p-4">{% trans "No patients found." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

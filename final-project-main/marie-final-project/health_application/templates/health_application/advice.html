@@ -1,0 +1,130 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Doctor Feedback" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row mb-4"><div class="col-12"><h1 class="fs-3 mb-1">{% trans "Doctor Feedback" %}</h1><p class="mb-0">{% trans "Care guidance sent by doctors and health providers." %}</p></div></div>
+<div class="row g-3">
+  {% if form %}
+    <div class="col-lg-5"><div class="card"><div class="card-body p-4">
+      <h2 class="fs-5 mb-3">{% trans "Send Medical Advice" %}</h2>
+      <form method="post" enctype="multipart/form-data" data-recorder-form>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3"><label class="form-label" for="{{ form.patient.id_for_label }}">{% trans "Patient" %}</label>{{ form.patient }}{{ form.patient.errors }}</div>
+        <div class="mb-3"><label class="form-label" for="{{ form.title.id_for_label }}">{% trans "Title" %}</label>{{ form.title }}{{ form.title.errors }}</div>
+        <div class="mb-3"><label class="form-label" for="{{ form.message_type.id_for_label }}">{% trans "Feedback Type" %}</label>{{ form.message_type }}{{ form.message_type.errors }}</div>
+        <div class="mb-3" data-text-section><label class="form-label" for="{{ form.advice_text.id_for_label }}">{% trans "Text Advice" %}</label>{{ form.advice_text }}{{ form.advice_text.errors }}</div>
+        <div class="mb-3" data-voice-section>
+          <label class="form-label">{% trans "Record Voice Feedback" %}</label>
+          {{ form.voice_file }}{{ form.voice_file.errors }}
+          <div class="border rounded-2 p-3">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button type="button" class="btn btn-outline-primary" data-record-start>{% trans "Start Recording" %}</button>
+              <button type="button" class="btn btn-outline-secondary" data-record-stop disabled>{% trans "Stop Recording" %}</button>
+              <button type="button" class="btn btn-outline-danger d-none" data-record-delete>{% trans "Delete / Record Again" %}</button>
+            </div>
+            <audio class="w-100 d-none" controls data-audio-preview></audio>
+            <p class="small text-secondary mb-0" data-record-status>Use your browser microphone to record feedback.</p>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">{% trans "Send Advice" %}</button>
+      </form>
+    </div></div></div>
+  {% endif %}
+  <div class="{% if form %}col-lg-7{% else %}col-12{% endif %}">
+    {% for item in advice_list %}
+      <div class="card mb-3"><div class="card-body p-4">
+        <h2 class="fs-5 mb-1">{{ item.title }}</h2>
+        <p class="text-secondary small">For {{ item.patient.full_name }} by {{ item.doctor }} - {{ item.created_at|date:"M d, Y H:i" }} - {{ item.get_message_type_display }}</p>
+        {% if item.advice_text %}<div>{{ item.advice_text|linebreaks }}</div>{% endif %}
+        {% if item.voice_file %}<audio controls class="w-100"><source src="{{ item.voice_file.url }}" type="audio/webm"></audio>{% endif %}
+      </div></div>
+    {% empty %}
+      <div class="card"><div class="card-body p-4 text-secondary">{% trans "No feedback found." %}</div></div>
+    {% endfor %}
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("[data-recorder-form]").forEach(function (form) {
+    var typeSelect = form.querySelector("[name='message_type']");
+    var textSection = form.querySelector("[data-text-section]");
+    var voiceSection = form.querySelector("[data-voice-section]");
+    var fileInput = form.querySelector("[name='voice_file']");
+    var startBtn = form.querySelector("[data-record-start]");
+    var stopBtn = form.querySelector("[data-record-stop]");
+    var deleteBtn = form.querySelector("[data-record-delete]");
+    var preview = form.querySelector("[data-audio-preview]");
+    var statusEl = form.querySelector("[data-record-status]");
+    var mediaRecorder = null;
+    var chunks = [];
+    var stream = null;
+
+    function syncSections() {
+      var value = typeSelect ? typeSelect.value : "TEXT";
+      textSection.classList.toggle("d-none", value === "VOICE");
+      voiceSection.classList.toggle("d-none", value === "TEXT");
+    }
+    function clearRecording() {
+      fileInput.value = "";
+      chunks = [];
+      if (preview.src) URL.revokeObjectURL(preview.src);
+      preview.removeAttribute("src");
+      preview.classList.add("d-none");
+      deleteBtn.classList.add("d-none");
+      statusEl.textContent = "Use your browser microphone to record feedback.";
+    }
+    function setRecordedFile(blob) {
+      var transfer = new DataTransfer();
+      transfer.items.add(new File([blob], "doctor-feedback.webm", { type: blob.type || "audio/webm" }));
+      fileInput.files = transfer.files;
+    }
+
+    if (typeSelect) typeSelect.addEventListener("change", syncSections);
+    syncSections();
+    startBtn.addEventListener("click", async function () {
+      clearRecording();
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        statusEl.textContent = "This browser does not support in-app voice recording.";
+        return;
+      }
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        var preferredType = MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "";
+        mediaRecorder = preferredType ? new MediaRecorder(stream, { mimeType: preferredType }) : new MediaRecorder(stream);
+        mediaRecorder.addEventListener("dataavailable", function (event) {
+          if (event.data && event.data.size) chunks.push(event.data);
+        });
+        mediaRecorder.addEventListener("stop", function () {
+          var blob = new Blob(chunks, { type: preferredType || "audio/webm" });
+          setRecordedFile(blob);
+          preview.src = URL.createObjectURL(blob);
+          preview.classList.remove("d-none");
+          deleteBtn.classList.remove("d-none");
+          statusEl.textContent = "Voice feedback recorded. Preview it before sending.";
+          if (stream) stream.getTracks().forEach(function (track) { track.stop(); });
+        });
+        mediaRecorder.start();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        statusEl.textContent = "Recording...";
+      } catch (error) {
+        statusEl.textContent = "Microphone permission was denied or unavailable.";
+      }
+    });
+    stopBtn.addEventListener("click", function () {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+    deleteBtn.addEventListener("click", function () {
+      clearRecording();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+  });
+});
+</script>
+{% endblock %}

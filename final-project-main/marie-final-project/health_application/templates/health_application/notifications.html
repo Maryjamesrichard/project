@@ -1,0 +1,31 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Notifications" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row mb-4"><div class="col-12"><h1 class="fs-3 mb-1">{% trans "Notifications" %}</h1><p class="mb-0">{% trans "Unread alerts and system updates." %}</p></div></div>
+<div class="card">
+  <ul class="list-group list-group-flush">
+    {% for notification in notifications %}
+      <li class="list-group-item p-4 d-flex justify-content-between gap-3 {% if not notification.is_read %}bg-primary bg-opacity-10{% endif %}">
+        <div>
+          <h2 class="fs-6 mb-1">{{ notification.title }}</h2>
+          <p class="mb-1">{{ notification.message }}</p>
+          <small class="text-secondary">{{ notification.created_at|date:"M d, Y H:i" }}</small>
+          {% if notification.related_message %}
+            <div class="mt-2"><a class="btn btn-sm btn-outline-primary" href="{% url 'message_detail' notification.related_message.id %}">{% trans "Open related message" %}</a></div>
+          {% elif notification.notification_type == "ADVICE" %}
+            <div class="mt-2"><a class="btn btn-sm btn-outline-primary" href="{% url 'advice' %}">{% trans "View feedback" %}</a></div>
+          {% endif %}
+        </div>
+        {% if not notification.is_read %}
+          <form method="post" action="{% url 'mark_notification_read' notification.id %}">{% csrf_token %}<button class="btn btn-sm btn-outline-primary" type="submit">{% trans "Mark Read" %}</button></form>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li class="list-group-item p-4 text-secondary">{% trans "No notifications found." %}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Dashboard" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="mb-6">
+      <h1 class="fs-3 mb-1">{% trans "Dashboard" %}</h1>
+      <p>{% trans "Mobile health support summary for" %} {{ request.user.profile.get_role_display|default:"your role" }}.</p>
+    </div>
+  </div>
+</div>
+
+{% if role == "PATIENT" %}
+  <div class="row g-3 mb-3">
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'patient_create' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-primary text-white rounded-2"><i class="ti ti-plus"></i></div><div><h2 class="mb-2 fs-6">{% trans "Add Patient" %}</h2><p class="mb-0 small text-secondary">{% trans "Create patient information" %}</p></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'compose_message' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-warning text-white rounded-2"><i class="ti ti-microphone"></i></div><div><h2 class="mb-2 fs-6">{% trans "Record voice note" %}</h2><p class="mb-0 small text-secondary">{% trans "Send message to doctor" %}</p></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'advice' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-success text-white rounded-2"><i class="ti ti-stethoscope"></i></div><div><h2 class="mb-2 fs-6">{% trans "Advice" %}</h2><p class="mb-0 small text-secondary">{{ latest_advice|length }} {% trans "recent responses" %}</p></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'reminders' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-danger text-white rounded-2"><i class="ti ti-clock-heart"></i></div><div><h2 class="mb-2 fs-6">{% trans "Reminders" %}</h2><p class="mb-0 small text-secondary">{{ active_reminders|length }} {% trans "active" %}</p></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'notifications' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-info text-white rounded-2"><i class="ti ti-bell"></i></div><div><h2 class="mb-2 fs-6">{% trans "Notifications" %}</h2><p class="mb-0 small text-secondary">{{ unread_notifications }} {% trans "unread" %}</p></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'profile' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-secondary text-white rounded-2"><i class="ti ti-user-circle"></i></div><div><h2 class="mb-2 fs-6">{% trans "Profile" %}</h2><p class="mb-0 small text-secondary">{% trans "Language and account" %}</p></div></div></a></div>
+  </div>
+{% elif role == "DOCTOR" %}
+  <div class="row g-3 mb-3">
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'patients' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-primary text-white rounded-2"><i class="ti ti-users"></i></div><div><h2 class="mb-2 fs-6">{% trans "Assigned Patients" %}</h2><h3 class="fw-bold mb-0">{{ total_patients }}</h3></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'messages' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-warning text-white rounded-2"><i class="ti ti-message"></i></div><div><h2 class="mb-2 fs-6">{% trans "Received messages" %}</h2><h3 class="fw-bold mb-0">{{ unread_messages }}</h3></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'advice' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-success text-white rounded-2"><i class="ti ti-stethoscope"></i></div><div><h2 class="mb-2 fs-6">{% trans "Send advice" %}</h2><h3 class="fw-bold mb-0">{{ pending_reviews }}</h3></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'reminders' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-danger text-white rounded-2"><i class="ti ti-clock-heart"></i></div><div><h2 class="mb-2 fs-6">{% trans "Create medication reminders" %}</h2><h3 class="fw-bold mb-0">{{ total_reminders }}</h3></div></div></a></div>
+  </div>
+{% else %}
+  <div class="row g-3 mb-3">
+    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">Users</h2><h3 class="fw-bold mb-0">{{ total_users|default:0 }}</h3></div></div>
+    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">Doctors</h2><h3 class="fw-bold mb-0">{{ total_doctors|default:0 }}</h3></div></div>
+    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">Patients</h2><h3 class="fw-bold mb-0">{{ total_all_patients|default:total_patients }}</h3></div></div>
+    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">Messages</h2><h3 class="fw-bold mb-0">{{ total_all_messages|default:total_messages }}</h3></div></div>
+  </div>
+{% endif %}
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header bg-white px-4 py-3"><h3 class="h5 mb-0">{% if role == "DOCTOR" %}{% trans "Recent Caregiver Messages" %}{% else %}{% trans "Recent Messages" %}{% endif %}</h3></div>
+      <ul class="list-group list-group-flush">
+        {% for item in recent_messages %}
+          <li class="list-group-item p-3"><a href="{% url 'message_detail' item.id %}">{{ item.subject }}</a><div class="small text-secondary">{{ item.patient|default:"No patient" }} - {{ item.created_at|date:"M d, Y H:i" }}</div></li>
+        {% empty %}
+          <li class="list-group-item p-4 text-secondary">{% trans "No recent messages." %}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card table-responsive h-100">
+      <table class="table mb-0 text-nowrap table-hover">
+        <thead class="table-light border-light"><tr><th>{% if role == "DOCTOR" %}{% trans "Assigned Patient" %}{% else %}{% trans "Patient Information" %}{% endif %}</th><th>{% trans "Status" %}</th><th>{% trans "Condition" %}</th></tr></thead>
+        <tbody>
+          {% for patient in recent_patients %}
+            <tr><td><a href="{% url 'patient_detail' patient.id %}">{{ patient.full_name }}</a></td><td>{{ patient.status }}</td><td>{{ patient.medical_condition|default:"-" }}</td></tr>
+          {% empty %}
+            <tr><td colspan="3" class="text-secondary p-4">{% trans "No patients have been added." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

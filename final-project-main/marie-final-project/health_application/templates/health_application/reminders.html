@@ -1,0 +1,87 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Reminders" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="fs-3 mb-1">{% trans "Medication Reminders" %}</h1>
+        <p class="mb-0">{% trans "Create and track medication schedules" %}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-3">
+  {% if can_manage_reminders %}
+  <div class="col-lg-5 col-12">
+    <div class="card">
+      <div class="card-body p-4">
+        <h2 class="fs-5 mb-3">{% trans "Create Reminder" %}</h2>
+        <form method="post">
+          {% csrf_token %}
+          {% for field in form %}
+            <div class="{% if field.field.widget.input_type == 'checkbox' %}form-check{% else %}mb-3{% endif %}">
+              {% if field.field.widget.input_type == 'checkbox' %}
+                {{ field }} <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {% elif field.name == "days_of_week" %}
+                <label class="form-label">{{ field.label }}</label>
+                <div class="d-flex flex-wrap gap-3">{{ field }}</div>
+                {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+              {% else %}
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
+              {% endif %}
+              {{ field.errors }}
+            </div>
+          {% endfor %}
+          <button type="submit" class="btn btn-primary mt-3">{% trans "Create Reminder" %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="{% if can_manage_reminders %}col-lg-7{% else %}col-12{% endif %} col-12">
+    <div class="card table-responsive">
+      <table class="table mb-0 text-nowrap table-hover">
+        <thead class="table-light border-light"><tr><th>{% trans "Patient" %}</th><th>{% trans "Medicine" %}</th><th>{% trans "Dosage" %}</th><th>{% trans "Time" %}</th><th>{% trans "Next dose" %}</th><th>{% trans "Status" %}</th>{% if can_manage_reminders %}<th></th>{% endif %}</tr></thead>
+        <tbody>
+          {% for reminder in reminders %}
+            <tr>
+              <td>{{ reminder.patient.full_name }}</td><td>{{ reminder.medicine_name }}</td><td>{{ reminder.dosage }}</td><td>{{ reminder.reminder_time|time:"H:i" }}</td><td><span class="reminder-countdown" data-reminder-id="{{ reminder.id }}" data-next-trigger="{{ reminder.next_trigger_at|date:'c' }}">-</span></td><td>{% if reminder.is_active %}<span class="badge bg-success-subtle text-success">{% trans "Active" %}</span>{% else %}<span class="badge bg-secondary">{% trans "Inactive" %}</span>{% endif %}</td>
+              {% if can_manage_reminders %}
+              <td>
+                <a href="{% url 'reminder_edit' reminder.id %}"><i class="ti ti-edit"></i></a>
+                <form method="post" action="{% url 'reminder_delete' reminder.id %}" class="d-inline">{% csrf_token %}<button type="submit" class="btn btn-link link-danger p-0 ms-2" onclick="return confirm('{% trans 'Delete this reminder?' %}')"><i class="ti ti-trash"></i></button></form>
+              </td>
+              {% endif %}
+            </tr>
+          {% empty %}
+            <tr><td colspan="{% if can_manage_reminders %}7{% else %}6{% endif %}" class="text-secondary p-4">{% trans "No reminders found." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% if can_manage_reminders %}
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card table-responsive">
+      <div class="card-header bg-white px-4 py-3"><h2 class="h5 mb-0">{% trans "Reminder History" %}</h2></div>
+      <table class="table mb-0 text-nowrap table-hover">
+        <thead class="table-light"><tr><th>{% trans "Patient" %}</th><th>{% trans "Medicine" %}</th><th>{% trans "Scheduled for" %}</th><th>{% trans "Status" %}</th><th>{% trans "Taken at" %}</th></tr></thead>
+        <tbody>
+          {% for log in history %}
+            <tr><td>{{ log.patient.full_name }}</td><td>{{ log.reminder.medicine_name }}</td><td>{{ log.scheduled_for|date:"M d, Y H:i" }}</td><td>{{ log.get_status_display }}</td><td>{{ log.taken_at|date:"M d, Y H:i"|default:"-" }}</td></tr>
+          {% empty %}
+            <tr><td colspan="5" class="text-secondary p-4">{% trans "No reminder history found." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

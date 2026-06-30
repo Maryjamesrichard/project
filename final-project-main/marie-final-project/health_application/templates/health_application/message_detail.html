@@ -1,0 +1,189 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ message_obj.subject }} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card mb-3">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+          <div>
+            <h1 class="fs-3 mb-1">{{ message_obj.subject }}</h1>
+            <p class="mb-0 text-secondary">{% trans "From" %} {{ message_obj.sender }} {% trans "to" %} {{ message_obj.recipient }} - {{ message_obj.created_at|date:"M d, Y H:i" }}</p>
+          </div>
+          <span class="badge bg-primary">{{ message_obj.get_message_type_display }}</span>
+        </div>
+        {% if message_obj.patient %}
+          <div class="border rounded-2 p-3 mb-3">
+            <h2 class="fs-5 mb-3">{% trans "Patient Details" %}</h2>
+            <div class="row small g-2">
+              <div class="col-md-6"><strong>{% trans "Name" %}:</strong> {{ message_obj.patient.full_name }}</div>
+              <div class="col-md-3"><strong>{% trans "Age" %}:</strong> {{ message_obj.patient.age }}</div>
+              <div class="col-md-3"><strong>{% trans "Gender" %}:</strong> {{ message_obj.patient.gender }}</div>
+              <div class="col-md-6"><strong>{% trans "Condition" %}:</strong> {{ message_obj.patient.medical_condition|default:"-" }}</div>
+              <div class="col-md-6"><strong>{% trans "Status" %}:</strong> {{ message_obj.patient.status }}</div>
+            </div>
+          </div>
+        {% endif %}
+        {% if message_obj.body %}<div class="border rounded-2 p-3 mb-3">{{ message_obj.body|linebreaks }}</div>{% endif %}
+        {% if message_obj.voice_file %}
+          <div class="mb-3">
+            <label class="form-label">{% trans "Caregiver Voice Note" %}</label>
+            <audio controls class="w-100"><source src="{{ message_obj.voice_file.url }}" type="audio/webm"></audio>
+          </div>
+        {% endif %}
+        <p class="small text-secondary mb-0">
+          {% trans "Read" %}: {% if message_obj.is_read %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+          {% if message_obj.reviewed_at %} - {% trans "Reviewed" %} {{ message_obj.reviewed_at|date:"M d, Y H:i" }}{% endif %}
+          - {% trans "Appointment needed" %}: {% if message_obj.appointment_needed %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body p-4">
+        <h2 class="fs-5 mb-3">{% trans "Doctor Feedback" %}</h2>
+        {% for advice in message_obj.medical_advice.all %}
+          <div class="border rounded-2 p-3 mb-3">
+            <h3 class="fs-6 mb-1">{{ advice.title }}</h3>
+            <p class="small text-secondary mb-2">{{ advice.created_at|date:"M d, Y H:i" }} - {{ advice.get_message_type_display }}</p>
+            {% if advice.advice_text %}<div>{{ advice.advice_text|linebreaks }}</div>{% endif %}
+            {% if advice.voice_file %}<audio controls class="w-100"><source src="{{ advice.voice_file.url }}" type="audio/webm"></audio>{% endif %}
+          </div>
+        {% empty %}
+          <p class="text-secondary mb-0">{% trans "No feedback has been sent for this message yet." %}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% if can_doctor_review %}
+    <div class="col-lg-4">
+      <div class="card mb-3">
+        <div class="card-body p-4">
+          <h2 class="fs-5 mb-3">{% trans "Appointment Needed" %}</h2>
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="appointment">
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary" type="submit" name="appointment_needed" value="1">{% trans "Appointment Needed" %}</button>
+              <button class="btn btn-outline-secondary" type="submit" name="appointment_needed" value="0">{% trans "Not Needed" %}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body p-4">
+          <h2 class="fs-5 mb-3">{% trans "Send Medical Advice" %}</h2>
+          <form method="post" enctype="multipart/form-data" data-recorder-form>
+            {% csrf_token %}
+            <input type="hidden" name="action" value="advice">
+            {{ advice_form.non_field_errors }}
+            {{ advice_form.patient }}
+            <div class="mb-3"><label class="form-label" for="{{ advice_form.title.id_for_label }}">{% trans "Title" %}</label>{{ advice_form.title }}{{ advice_form.title.errors }}</div>
+            <div class="mb-3"><label class="form-label" for="{{ advice_form.message_type.id_for_label }}">{% trans "Feedback Type" %}</label>{{ advice_form.message_type }}{{ advice_form.message_type.errors }}</div>
+            <div class="mb-3" data-text-section><label class="form-label" for="{{ advice_form.advice_text.id_for_label }}">{% trans "Text Advice" %}</label>{{ advice_form.advice_text }}{{ advice_form.advice_text.errors }}</div>
+            <div class="mb-3" data-voice-section>
+              <label class="form-label">{% trans "Record Voice Feedback" %}</label>
+              {{ advice_form.voice_file }}{{ advice_form.voice_file.errors }}
+              <div class="border rounded-2 p-3">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <button type="button" class="btn btn-outline-primary" data-record-start>{% trans "Start Recording" %}</button>
+                  <button type="button" class="btn btn-outline-secondary" data-record-stop disabled>{% trans "Stop Recording" %}</button>
+                  <button type="button" class="btn btn-outline-danger d-none" data-record-delete>{% trans "Delete / Record Again" %}</button>
+                </div>
+                <audio class="w-100 d-none" controls data-audio-preview></audio>
+                <p class="small text-secondary mb-0" data-record-status>Use your browser microphone to record feedback.</p>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit">{% trans "Send Advice" %}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("[data-recorder-form]").forEach(function (form) {
+    var typeSelect = form.querySelector("[name='message_type']");
+    var textSection = form.querySelector("[data-text-section]");
+    var voiceSection = form.querySelector("[data-voice-section]");
+    var fileInput = form.querySelector("[name='voice_file']");
+    var startBtn = form.querySelector("[data-record-start]");
+    var stopBtn = form.querySelector("[data-record-stop]");
+    var deleteBtn = form.querySelector("[data-record-delete]");
+    var preview = form.querySelector("[data-audio-preview]");
+    var statusEl = form.querySelector("[data-record-status]");
+    var mediaRecorder = null;
+    var chunks = [];
+    var stream = null;
+
+    function syncSections() {
+      var value = typeSelect ? typeSelect.value : "TEXT";
+      textSection.classList.toggle("d-none", value === "VOICE");
+      voiceSection.classList.toggle("d-none", value === "TEXT");
+    }
+    function clearRecording() {
+      fileInput.value = "";
+      chunks = [];
+      if (preview.src) URL.revokeObjectURL(preview.src);
+      preview.removeAttribute("src");
+      preview.classList.add("d-none");
+      deleteBtn.classList.add("d-none");
+      statusEl.textContent = "Use your browser microphone to record feedback.";
+    }
+    function setRecordedFile(blob) {
+      var transfer = new DataTransfer();
+      transfer.items.add(new File([blob], "doctor-feedback.webm", { type: blob.type || "audio/webm" }));
+      fileInput.files = transfer.files;
+    }
+
+    if (typeSelect) typeSelect.addEventListener("change", syncSections);
+    syncSections();
+    startBtn.addEventListener("click", async function () {
+      clearRecording();
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        statusEl.textContent = "This browser does not support in-app voice recording.";
+        return;
+      }
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        var preferredType = MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "";
+        mediaRecorder = preferredType ? new MediaRecorder(stream, { mimeType: preferredType }) : new MediaRecorder(stream);
+        mediaRecorder.addEventListener("dataavailable", function (event) {
+          if (event.data && event.data.size) chunks.push(event.data);
+        });
+        mediaRecorder.addEventListener("stop", function () {
+          var blob = new Blob(chunks, { type: preferredType || "audio/webm" });
+          setRecordedFile(blob);
+          preview.src = URL.createObjectURL(blob);
+          preview.classList.remove("d-none");
+          deleteBtn.classList.remove("d-none");
+          statusEl.textContent = "Voice feedback recorded. Preview it before sending.";
+          if (stream) stream.getTracks().forEach(function (track) { track.stop(); });
+        });
+        mediaRecorder.start();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        statusEl.textContent = "Recording...";
+      } catch (error) {
+        statusEl.textContent = "Microphone permission was denied or unavailable.";
+      }
+    });
+    stopBtn.addEventListener("click", function () {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+    deleteBtn.addEventListener("click", function () {
+      clearRecording();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+  });
+});
+</script>
+{% endblock %}

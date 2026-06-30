@@ -1,0 +1,75 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ page_title }} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+      <div>
+        <h1 class="fs-3 mb-1">{{ page_title }}</h1>
+        <p class="mb-0">{% trans "Manage patient details for mobile health support" %}</p>
+      </div>
+      <div><a href="{% url 'patients' %}" class="btn btn-primary">{% trans "Go to Patient List" %}</a></div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body p-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="{{ form.full_name.id_for_label }}">{% trans "Full Name" %}</label>
+              {{ form.full_name }}{{ form.full_name.errors }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label" for="{{ form.gender.id_for_label }}">{% trans "Gender" %}</label>
+              {{ form.gender }}{{ form.gender.errors }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label" for="{{ form.age.id_for_label }}">{% trans "Age" %}</label>
+              {{ form.age }}{{ form.age.errors }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="{{ form.phone.id_for_label }}">{% trans "Phone" %}</label>
+              {{ form.phone }}{{ form.phone.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="{{ form.emergency_contact.id_for_label }}">{% trans "Emergency Contact" %}</label>
+              {{ form.emergency_contact }}{{ form.emergency_contact.errors }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="{{ form.medical_condition.id_for_label }}">{% trans "Condition" %}</label>
+            {{ form.medical_condition }}{{ form.medical_condition.errors }}
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="{{ form.assigned_doctor.id_for_label }}">{% trans "Assigned Doctor" %}</label>
+              {{ form.assigned_doctor }}{{ form.assigned_doctor.errors }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="{{ form.status.id_for_label }}">{% trans "Status" %}</label>
+              {{ form.status }}{{ form.status.errors }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="{{ form.address.id_for_label }}">{% trans "Address" %}</label>
+            {{ form.address }}{{ form.address.errors }}
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">{{ button_label }}</button>
+            <a href="{% url 'patients' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

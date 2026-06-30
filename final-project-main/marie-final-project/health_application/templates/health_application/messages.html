@@ -1,0 +1,27 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ box }} {% trans "Messages" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+  <div class="col-12 d-flex justify-content-between align-items-center">
+    <div><h1 class="fs-3 mb-1">{{ box }} {% trans "Messages" %}</h1><p class="mb-0">{% trans "Text and voice communication between patients, caregivers, and doctors." %}</p></div>
+    <div class="d-flex gap-2"><a href="{% url 'messages' %}" class="btn btn-outline-secondary">{% trans "Inbox" %}</a><a href="{% url 'sent_messages' %}" class="btn btn-outline-secondary">{% trans "Sent" %}</a>{% if request.user.profile.role != "DOCTOR" %}<a href="{% url 'compose_message' %}" class="btn btn-primary">{% trans "Compose" %}</a>{% endif %}</div>
+  </div>
+</div>
+<div class="card table-responsive">
+  <table class="table mb-0 table-hover text-nowrap">
+    <thead class="table-light"><tr><th>{% trans "Subject" %}</th><th>{% trans "From" %}</th><th>{% trans "To" %}</th><th>{% trans "Patient" %}</th><th>{% trans "Type" %}</th><th>{% trans "Date" %}</th></tr></thead>
+    <tbody>
+      {% for item in messages_list %}
+        <tr class="{% if not item.is_read and item.recipient_id == request.user.id %}table-primary{% endif %}">
+          <td><a href="{% url 'message_detail' item.id %}">{{ item.subject }}</a></td><td>{{ item.sender }}</td><td>{{ item.recipient }}</td><td>{{ item.patient|default:"-" }}</td><td>{{ item.get_message_type_display }}</td><td>{{ item.created_at|date:"M d, Y H:i" }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="6" class="text-secondary p-4">{% trans "No messages found." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

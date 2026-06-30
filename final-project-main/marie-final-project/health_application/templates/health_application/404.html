@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>404 - Mobile Health Support System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'health_application/assets/css/main.css' %}">
+</head>
+<body>
+  <div class="container min-vh-100 d-flex align-items-center justify-content-center text-center">
+    <div>
+      <img src="{% static 'health_application/assets/images/logo-icon.svg' %}" alt="" width="48" class="mb-4">
+      <h1 class="display-5 fw-bold">Page not found</h1>
+      <p class="text-secondary mb-4">The requested health system page could not be found.</p>
+      <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+  </div>
+  <script src="{% static 'health_application/assets/js/main.js' %}" defer></script>
+</body>
+</html>

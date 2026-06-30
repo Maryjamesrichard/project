@@ -1,0 +1,25 @@
+{% extends "health_application/auth_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Login" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+{% block heading %}{% trans "Sign in to your account" %}{% endblock %}
+
+{% block content %}
+<form class="needs-validation mt-3" method="post" novalidate>
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="username" class="form-label">{% trans "Username" %}</label>
+    <input id="username" name="username" type="text" class="form-control" placeholder="{% trans 'Username' %}" required autofocus>
+    <div class="invalid-feedback">{% trans "Please enter your username." %}</div>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">{% trans "Password" %}</label>
+    <input id="password" name="password" type="password" class="form-control" placeholder="{% trans 'Password' %}" required minlength="6">
+    <div class="invalid-feedback">{% trans "Please provide a password." %}</div>
+  </div>
+  <button class="btn btn-primary w-100" type="submit">{% trans "Sign in" %}</button>
+</form>
+<div class="text-center mt-3 small text-muted">
+  {% trans "Don't have an account?" %} <a href="{% url 'register' %}" class="link-primary">{% trans "Sign up" %}</a>
+</div>
+{% endblock %}

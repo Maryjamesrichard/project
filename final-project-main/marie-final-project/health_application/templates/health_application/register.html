@@ -1,0 +1,24 @@
+{% extends "health_application/auth_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Register" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+{% block heading %}{% trans "Create your account" %}{% endblock %}
+
+{% block content %}
+<form class="needs-validation mt-3" method="post" novalidate>
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="mb-3">
+      <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+      {{ field }}
+      {% if field.errors %}
+        <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <button class="btn btn-primary w-100" type="submit">{% trans "Sign up" %}</button>
+</form>
+<div class="text-center mt-3 small text-muted">
+  {% trans "Already have an account?" %} <a href="{% url 'login' %}" class="link-primary">{% trans "Sign in" %}</a>
+</div>
+{% endblock %}

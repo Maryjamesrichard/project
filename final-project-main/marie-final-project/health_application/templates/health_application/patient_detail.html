@@ -1,0 +1,49 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ patient.full_name }} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+  <div class="col-12 d-flex justify-content-between align-items-center">
+    <div>
+      <h1 class="fs-3 mb-1">{{ patient.full_name }}</h1>
+      <p class="mb-0">{{ patient.status }}{% if patient.assigned_doctor %} - Dr. {{ patient.assigned_doctor.get_full_name|default:patient.assigned_doctor.username }}{% endif %}</p>
+    </div>
+    {% if request.user.profile.role != "DOCTOR" %}<a class="btn btn-primary" href="{% url 'patient_edit' patient.id %}">{% trans "Update Patient" %}</a>{% endif %}
+  </div>
+</div>
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="card h-100"><div class="card-body p-4">
+      <h2 class="fs-5 mb-3">{% trans "Patient Information" %}</h2>
+      <p><strong>{% trans "Gender" %}:</strong> {{ patient.gender }}</p>
+      <p><strong>{% trans "Age" %}:</strong> {{ patient.age }}</p>
+      <p><strong>{% trans "Phone" %}:</strong> {{ patient.phone|default:"-" }}</p>
+      <p><strong>{% trans "Emergency Contact" %}:</strong> {{ patient.emergency_contact|default:"-" }}</p>
+      <p><strong>{% trans "Address" %}:</strong> {{ patient.address|default:"-" }}</p>
+      <p class="mb-0"><strong>{% trans "Condition" %}:</strong> {{ patient.medical_condition|default:"-" }}</p>
+    </div></div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card h-100"><div class="card-body p-4">
+      <h2 class="fs-5 mb-3">{% trans "Recent Health Records" %}</h2>
+      {% for record in patient.health_records.all|slice:":5" %}
+        <div class="border-bottom py-2 small">{{ record.recorded_at|date:"M d, Y H:i" }} - Temp {{ record.temperature|default:"-" }}, BP {{ record.blood_pressure|default:"-" }}</div>
+      {% empty %}
+        <p class="text-secondary mb-0">{% trans "No health records yet." %}</p>
+      {% endfor %}
+    </div></div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card h-100"><div class="card-body p-4">
+      <h2 class="fs-5 mb-3">{% trans "Active Reminders" %}</h2>
+      {% for reminder in patient.reminders.all|slice:":5" %}
+        <div class="border-bottom py-2 small">{{ reminder.medicine_name }} - {{ reminder.dosage }} at {{ reminder.reminder_time|time:"H:i" }}</div>
+      {% empty %}
+        <p class="text-secondary mb-0">{% trans "No reminders yet." %}</p>
+      {% endfor %}
+    </div></div>
+  </div>
+</div>
+{% endblock %}

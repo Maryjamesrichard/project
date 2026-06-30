@@ -1,0 +1,42 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE|default:'en' }}">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}{% trans "Mobile Health Support System" %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d6efd">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'health_application/assets/images/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'health_application/assets/images/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'health_application/assets/images/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'health_application/assets/site.webmanifest' %}">
+  <link rel="stylesheet" href="{% static 'health_application/assets/css/main.css' %}">
+</head>
+<body>
+  <div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card" style="max-width:420px; width:100%;">
+      <div class="card-body p-5">
+        <div class="text-center mb-3">
+          <a href="{% url 'dashboard' %}" class="mb-4 d-inline-block">
+            <div class="text-center mb-4">
+    <h2 class="fw-bold text-primary">MHSS for homecare patient</h2>
+</div>
+          </a>
+          <h1 class="card-title mb-5 h5">{% block heading %}{% endblock %}</h1>
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags|default:'info' }}{% endif %}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+  <script src="{% static 'health_application/assets/js/main.js' %}" defer></script>
+  <script>
+    window.healthAppConfig = { swUrl: "{% url 'service_worker' %}" };
+  </script>
+  <script src="{% static 'health_application/assets/js/pwa.js' %}" defer></script>
+</body>
+</html>

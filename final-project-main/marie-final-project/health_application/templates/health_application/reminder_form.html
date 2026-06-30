@@ -1,0 +1,21 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ page_title }} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row"><div class="col-lg-8"><div class="card"><div class="card-body p-4">
+  <h1 class="fs-3 mb-4">{{ page_title }}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="{% if field.field.widget.input_type == 'checkbox' %}form-check mb-3{% else %}mb-3{% endif %}">
+        {% if field.field.widget.input_type == 'checkbox' %}{{ field }} <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{% elif field.name == "days_of_week" %}<label class="form-label">{{ field.label }}</label><div class="d-flex flex-wrap gap-3">{{ field }}</div>{% else %}<label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% endif %}
+        {{ field.errors }}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+    <a href="{% url 'reminders' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+  </form>
+</div></div></div></div>
+{% endblock %}

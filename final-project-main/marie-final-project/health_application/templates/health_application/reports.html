@@ -1,0 +1,76 @@
+{% extends "health_application/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Health Reports" %} - {% trans "Mobile Health Support System" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="fs-3 mb-1">{% trans "Health Reports" %}</h1>
+        <p class="mb-0">{% trans "View mobile health support analytics and reports" %}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="card h-100"><div class="card-body p-4"><h6 class="mb-4">{% trans "Patients" %}</h6><h3 class="mb-1 fw-bold">{{ total_patients }}</h3><p class="mb-0 text-success small"><i class="ti ti-arrow-up"></i> {% trans "Total registered" %}</p></div></div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="card h-100"><div class="card-body p-4"><h6 class="mb-4">{% trans "Reminders" %}</h6><h3 class="mb-1 fw-bold">{{ total_reminders }}</h3><p class="mb-0 text-success small"><i class="ti ti-arrow-up"></i> {{ active_reminders }} {% trans "active" %}</p></div></div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="card h-100"><div class="card-body p-4"><h6 class="mb-4">{% trans "Health Records" %}</h6><h3 class="mb-1 fw-bold">{{ total_health_records }}</h3><p class="mb-0 text-primary small"><i class="ti ti-notes"></i> {% trans "Recorded entries" %}</p></div></div>
+  </div>
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="card h-100"><div class="card-body p-4"><h6 class="mb-4">{% trans "Messages" %}</h6><h3 class="mb-1 fw-bold">{{ total_messages }}</h3><p class="mb-0 text-warning small"><i class="ti ti-message"></i> {% trans "Care messages" %}</p></div></div>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body p-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3 gap-2">
+          <div><h2 class="mb-0 fs-5">{% trans "System Overview" %}</h2></div>
+          <div class="controls">
+            <button id="btn-random" class="btn btn-light btn-sm">{% trans "Randomize Data" %}</button>
+            <button id="btn-update" class="btn btn-primary btn-sm">{% trans "Show This Year Only" %}</button>
+          </div>
+        </div>
+        <div id="salesChart"></div>
+        <div class="d-flex justify-content-end"><a href="{% url 'patients' %}" class="small">{% trans "View patient list" %}</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div><h2 class="mb-0 fs-5">{% trans "Recent Patients" %}</h2></div>
+        </div>
+        <div class="list-group list-group-flush">
+          {% for patient in recent_patients %}
+            <div class="list-group-item p-3 d-flex align-items-center">
+              <div class="me-3"><span class="avatar avatar-md rounded bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center"><i class="ti ti-user"></i></span></div>
+              <div class="flex-grow-1">
+                <h6 class="mb-1">{{ patient.full_name }}</h6>
+                <p class="mb-0 small text-muted">{{ patient.medical_condition|default:"No condition listed" }}</p>
+              </div>
+              <span class="badge bg-success-subtle text-success">{% trans "Active" %}</span>
+            </div>
+          {% empty %}
+            <div class="list-group-item p-3 text-secondary">{% trans "No recent patients." %}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

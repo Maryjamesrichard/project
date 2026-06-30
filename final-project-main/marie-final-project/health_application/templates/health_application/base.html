@@ -1,0 +1,204 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE|default:'en' }}">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}{% trans "Mobile Health Support System" %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d6efd">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'health_application/assets/images/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'health_application/assets/images/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'health_application/assets/images/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'health_application/assets/site.webmanifest' %}">
+  <link rel="stylesheet" href="{% static 'health_application/assets/css/main.css' %}">
+</head>
+<body>
+  <div id="overlay" class="overlay"></div>
+
+  <nav id="topbar" class="navbar bg-white border-bottom fixed-top topbar px-3">
+    <button id="toggleBtn" class="d-none d-lg-inline-flex btn btn-light btn-icon btn-sm">
+      <i class="ti ti-layout-sidebar-left-expand"></i>
+    </button>
+    <button id="mobileBtn" class="btn btn-light btn-icon btn-sm d-lg-none me-2">
+      <i class="ti ti-layout-sidebar-left-expand"></i>
+    </button>
+    <div>
+      <ul class="list-unstyled d-flex align-items-center mb-0 gap-1">
+        <li>
+          <a class="position-relative btn-icon btn-sm btn-light btn rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" href="#" role="button">
+            <i class="ti ti-bell fs-5"></i>
+            {% if unread_notification_count %}
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-2 ms-n2">
+                {{ unread_notification_count }}
+                <span class="visually-hidden">{% trans "unread notifications" %}</span>
+              </span>
+            {% endif %}
+          </a>
+          <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-0">
+            <ul class="list-unstyled p-0 m-0">
+              {% for notification in latest_unread_notifications %}
+                <li class="p-3 border-bottom">
+                  <div class="d-flex gap-3">
+                    <img src="{% static 'health_application/assets/images/avatar-1.jpg' %}" alt="" class="avatar avatar-sm rounded-circle">
+                    <div class="flex-grow-1 small">
+                      <p class="mb-0">{{ notification.title }}</p>
+                      <p class="mb-1">{{ notification.message|truncatechars:80 }}</p>
+                      <div class="text-secondary">{{ notification.created_at|timesince }} {% trans "ago" %}</div>
+                    </div>
+                  </div>
+                </li>
+              {% empty %}
+                <li class="p-3 border-bottom small text-secondary">{% trans "No unread notifications." %}</li>
+              {% endfor %}
+              <li class="px-4 py-3 text-center">
+                <a href="{% url 'notifications' %}" class="text-primary">{% trans "View notifications" %}</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="ms-3 dropdown">
+          <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{% static 'health_application/assets/images/avatar-1.jpg' %}" alt="" class="avatar avatar-sm rounded-circle">
+          </a>
+          <div class="dropdown-menu dropdown-menu-end p-0" style="min-width: 200px;">
+            <div class="d-flex gap-3 align-items-center border-dashed border-bottom px-3 py-3">
+              <img src="{% static 'health_application/assets/images/avatar-1.jpg' %}" alt="" class="avatar avatar-md rounded-circle">
+              <div>
+                <h4 class="mb-0 small">{{ request.user.get_username }}</h4>
+                <p class="mb-0 small">{{ request.user.profile.get_role_display|default:"Health user" }}</p>
+              </div>
+            </div>
+            <div class="p-3 d-flex flex-column gap-1 small lh-lg">
+              <a href="{% url 'dashboard' %}"><span>{% trans "Dashboard" %}</span></a>
+              <a href="{% url 'patients' %}"><span>{% trans "Patients" %}</span></a>
+              <a href="{% url 'profile' %}"><span>{% trans "Profile" %}</span></a>
+              <a href="{% url 'logout' %}"><span>{% trans "Log out" %}</span></a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="logo-area">
+      <a href="{% url 'dashboard' %}" class="d-inline-flex">
+        <img src="{% static 'health_application/assets/images/logo-icon.svg' %}" alt="" width="24">
+        <span class="logo-text ms-2">Health App</span>
+      </a>
+    </div>
+    <ul class="nav flex-column">
+      {% with role=request.user.profile.role %}
+      <li class="px-4 py-2"><small class="nav-text">{% trans "Main" %}</small></li>
+      <li><a data-route="dashboard" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}"><i class="ti ti-home"></i><span class="nav-text">{% trans "Dashboard" %}</span></a></li>
+      {% if role == "PATIENT" %}
+        <li><a data-route="patients" class="nav-link {% if request.resolver_match.url_name == 'patients' %}active{% endif %}" href="{% url 'patients' %}"><i class="ti ti-users"></i><span class="nav-text">{% trans "Patient Information" %}</span></a></li>
+        <li><a data-route="patient_create" class="nav-link {% if request.resolver_match.url_name == 'patient_create' %}active{% endif %}" href="{% url 'patient_create' %}"><i class="ti ti-plus"></i><span class="nav-text">{% trans "Add Patient" %}</span></a></li>
+        <li><a data-route="messages" class="nav-link {% if request.resolver_match.url_name == 'messages' or request.resolver_match.url_name == 'sent_messages' %}active{% endif %}" href="{% url 'messages' %}"><i class="ti ti-message"></i><span class="nav-text">{% trans "Messages" %}</span></a></li>
+        <li><a data-route="compose_message" class="nav-link {% if request.resolver_match.url_name == 'compose_message' %}active{% endif %}" href="{% url 'compose_message' %}"><i class="ti ti-microphone"></i><span class="nav-text">{% trans "Record voice note" %}</span></a></li>
+        <li><a data-route="advice" class="nav-link {% if request.resolver_match.url_name == 'advice' %}active{% endif %}" href="{% url 'advice' %}"><i class="ti ti-stethoscope"></i><span class="nav-text">{% trans "Advice" %}</span></a></li>
+        <li><a data-route="reminders" class="nav-link {% if request.resolver_match.url_name == 'reminders' %}active{% endif %}" href="{% url 'reminders' %}"><i class="ti ti-clock-heart"></i><span class="nav-text">{% trans "Reminders" %}</span></a></li>
+      {% elif role == "DOCTOR" %}
+        <li><a data-route="patients" class="nav-link {% if request.resolver_match.url_name == 'patients' %}active{% endif %}" href="{% url 'patients' %}"><i class="ti ti-users"></i><span class="nav-text">{% trans "Assigned Patients" %}</span></a></li>
+        <li><a data-route="messages" class="nav-link {% if request.resolver_match.url_name == 'messages' or request.resolver_match.url_name == 'sent_messages' %}active{% endif %}" href="{% url 'messages' %}"><i class="ti ti-message"></i><span class="nav-text">{% trans "Messages" %}</span></a></li>
+        <li><a data-route="advice" class="nav-link {% if request.resolver_match.url_name == 'advice' %}active{% endif %}" href="{% url 'advice' %}"><i class="ti ti-stethoscope"></i><span class="nav-text">{% trans "Advice" %}</span></a></li>
+        <li><a data-route="reminders" class="nav-link {% if request.resolver_match.url_name == 'reminders' %}active{% endif %}" href="{% url 'reminders' %}"><i class="ti ti-clock-heart"></i><span class="nav-text">{% trans "Medication Reminders" %}</span></a></li>
+      {% else %}
+        <li><a data-route="patients" class="nav-link {% if request.resolver_match.url_name == 'patients' %}active{% endif %}" href="{% url 'patients' %}"><i class="ti ti-users"></i><span class="nav-text">{% trans "Patients" %}</span></a></li>
+        <li><a data-route="patient_create" class="nav-link {% if request.resolver_match.url_name == 'patient_create' %}active{% endif %}" href="{% url 'patient_create' %}"><i class="ti ti-plus"></i><span class="nav-text">{% trans "Add Patient" %}</span></a></li>
+        <li><a data-route="health_records" class="nav-link {% if request.resolver_match.url_name == 'health_records' %}active{% endif %}" href="{% url 'health_records' %}"><i class="ti ti-heart-rate-monitor"></i><span class="nav-text">{% trans "Health Records" %}</span></a></li>
+        <li><a data-route="reminders" class="nav-link {% if request.resolver_match.url_name == 'reminders' %}active{% endif %}" href="{% url 'reminders' %}"><i class="ti ti-clock-heart"></i><span class="nav-text">{% trans "Reminders" %}</span></a></li>
+        <li><a data-route="messages" class="nav-link {% if request.resolver_match.url_name == 'messages' %}active{% endif %}" href="{% url 'messages' %}"><i class="ti ti-message"></i><span class="nav-text">{% trans "Messages" %}</span></a></li>
+        <li><a data-route="advice" class="nav-link {% if request.resolver_match.url_name == 'advice' %}active{% endif %}" href="{% url 'advice' %}"><i class="ti ti-stethoscope"></i><span class="nav-text">{% trans "Advice" %}</span></a></li>
+        <li><a data-route="reports" class="nav-link {% if request.resolver_match.url_name == 'reports' %}active{% endif %}" href="{% url 'reports' %}"><i class="ti ti-receipt"></i><span class="nav-text">{% trans "Health Reports" %}</span></a></li>
+      {% endif %}
+      <li><a data-route="notifications" class="nav-link {% if request.resolver_match.url_name == 'notifications' %}active{% endif %}" href="{% url 'notifications' %}"><i class="ti ti-bell"></i><span class="nav-text">{% trans "Notifications" %}</span></a></li>
+      <li class="px-4 pt-4 pb-2"><small class="nav-text">{% trans "Account" %}</small></li>
+      <li><a data-route="profile" class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}"><i class="ti ti-user-circle"></i><span class="nav-text">{% trans "Profile" %}</span></a></li>
+      <li><a class="nav-link" href="{% url 'logout' %}"><i class="ti ti-logout"></i><span class="nav-text">{% trans "Log out" %}</span></a></li>
+      {% endwith %}
+    </ul>
+  </aside>
+
+  <main id="content" class="content py-10">
+    <div class="container-fluid">
+      {% if messages %}
+        <div class="row">
+          <div class="col-12">
+            {% for message in messages %}
+              <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+      <div class="row">
+        <div class="col-12">
+          <footer class="text-center py-2 mt-6 text-secondary">
+            <p class="mb-0">Copyright &copy; 2026 {% trans "Mobile Health Support System" %}.</p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div id="installPrompt" class="position-fixed bottom-0 start-0 end-0 p-3 d-none" style="z-index: 1080;">
+    <div class="card shadow-sm mx-auto" style="max-width: 420px;">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="icon-shape icon-md bg-primary text-white rounded-2"><i class="ti ti-device-mobile-down"></i></div>
+        <div class="flex-grow-1">
+          <h2 class="fs-6 mb-1">{% trans "Install Health App" %}</h2>
+          <p class="small text-secondary mb-0">{% trans "Use this app offline and from your home screen." %}</p>
+        </div>
+        <button id="installHealthApp" class="btn btn-primary btn-sm">{% trans "Install Health App" %}</button>
+        <button id="dismissInstallPrompt" class="btn btn-light btn-sm" aria-label="{% trans 'Dismiss' %}"><i class="ti ti-x"></i></button>
+      </div>
+    </div>
+  </div>
+  <div id="medicationReminderModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5">{% trans "Time to take your medicine" %}</h2>
+        </div>
+        <div class="modal-body">
+          <p id="reminderMedicineName" class="fw-semibold mb-1"></p>
+          <p id="reminderDoseText" class="mb-1"></p>
+          <p id="reminderInstructionsText" class="text-secondary mb-0"></p>
+        </div>
+        <div class="modal-footer">
+          <button id="stopReminderAlarm" type="button" class="btn btn-outline-secondary">{% trans "Stop Alarm" %}</button>
+          <button id="markReminderTaken" type="button" class="btn btn-primary">{% trans "Mark as Taken" %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{% static 'health_application/assets/js/main.js' %}" defer></script>
+  <script>
+    window.healthAppConfig = {
+      swUrl: "{% url 'service_worker' %}",
+      activeRemindersUrl: "{% url 'active_reminders_api' %}",
+      markTakenUrlTemplate: "{% url 'mark_reminder_taken_api' 0 %}",
+      alarmAudioUrl: "{% static 'health_application/assets/audio/reminder-alarm.wav' %}",
+      csrfToken: "{{ csrf_token }}",
+      i18n: {
+        nextDoseIn: "{% trans 'Next dose in' %}",
+        timeToTake: "{% trans 'Time to take your medicine' %}",
+        markAsTaken: "{% trans 'Mark as Taken' %}"
+      }
+    };
+  </script>
+  <script src="{% static 'health_application/assets/js/pwa.js' %}" defer></script>
+  <script src="{% static 'health_application/assets/js/reminders.js' %}" defer></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      var currentRoute = "{{ request.resolver_match.url_name|default:'' }}";
+      document.querySelectorAll(".sidebar .nav-link").forEach(function (link) {
+        link.classList.toggle("active", link.dataset.route === currentRoute);
+      });
+    });
+  </script>
+</body>
+</html>
