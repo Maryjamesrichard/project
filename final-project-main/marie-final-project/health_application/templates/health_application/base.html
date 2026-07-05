@@ -39,7 +39,9 @@
               {% for notification in latest_unread_notifications %}
                 <li class="p-3 border-bottom">
                   <div class="d-flex gap-3">
-                    <img src="{% static 'health_application/assets/images/avatar-1.jpg' %}" alt="" class="avatar avatar-sm rounded-circle">
+                    <div class="avatar avatar-sm rounded-circle bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center">
+                      <span class="fw-semibold">{{ request.user.get_username|slice:':1'|upper|default:'U' }}</span>
+                    </div>
                     <div class="flex-grow-1 small">
                       <p class="mb-0">{{ notification.title }}</p>
                       <p class="mb-1">{{ notification.message|truncatechars:80 }}</p>
@@ -58,11 +60,15 @@
         </li>
         <li class="ms-3 dropdown">
           <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{% static 'health_application/assets/images/avatar-1.jpg' %}" alt="" class="avatar avatar-sm rounded-circle">
+            <div class="avatar avatar-sm rounded-circle bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center">
+              <span class="fw-semibold">{{ request.user.get_username|slice:':1'|upper|default:'U' }}</span>
+            </div>
           </a>
           <div class="dropdown-menu dropdown-menu-end p-0" style="min-width: 200px;">
             <div class="d-flex gap-3 align-items-center border-dashed border-bottom px-3 py-3">
-              <img src="{% static 'health_application/assets/images/avatar-1.jpg' %}" alt="" class="avatar avatar-md rounded-circle">
+              <div class="avatar avatar-md rounded-circle bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center">
+                <span class="fw-semibold">{{ request.user.get_username|slice:':1'|upper|default:'U' }}</span>
+              </div>
               <div>
                 <h4 class="mb-0 small">{{ request.user.get_username }}</h4>
                 <p class="mb-0 small">{{ request.user.profile.get_role_display|default:"Health user" }}</p>
