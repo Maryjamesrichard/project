@@ -16,5 +16,7 @@ class ProfileLanguageMiddleware:
             translation.activate(language)
             request.LANGUAGE_CODE = language
         response = self.get_response(request)
+        if language in valid_codes:
+            response["Content-Language"] = language
         translation.deactivate()
         return response

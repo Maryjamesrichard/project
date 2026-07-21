@@ -8,7 +8,7 @@
   <div class="col-12">
     <div class="mb-6">
       <h1 class="fs-3 mb-1">{% trans "Dashboard" %}</h1>
-      <p>{% trans "Mobile health support summary for" %} {{ request.user.profile.get_role_display|default:"your role" }}.</p>
+      <p>{% trans "Web health support summary for" %} {{ request.user.profile.get_role_display|default:"your role" }}.</p>
     </div>
   </div>
 </div>
@@ -25,8 +25,9 @@
 {% elif role == "DOCTOR" %}
   <div class="row g-3 mb-3">
     <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'patients' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-primary text-white rounded-2"><i class="ti ti-users"></i></div><div><h2 class="mb-2 fs-6">{% trans "Assigned Patients" %}</h2><h3 class="fw-bold mb-0">{{ total_patients }}</h3></div></div></a></div>
-    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'messages' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-warning text-white rounded-2"><i class="ti ti-message"></i></div><div><h2 class="mb-2 fs-6">{% trans "Received messages" %}</h2><h3 class="fw-bold mb-0">{{ unread_messages }}</h3></div></div></a></div>
-    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'advice' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-success text-white rounded-2"><i class="ti ti-stethoscope"></i></div><div><h2 class="mb-2 fs-6">{% trans "Send advice" %}</h2><h3 class="fw-bold mb-0">{{ pending_reviews }}</h3></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'messages' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-warning text-white rounded-2"><i class="ti ti-message"></i></div><div><h2 class="mb-2 fs-6">{% trans "New messages received" %}</h2><h3 class="fw-bold mb-0">{{ unread_messages }}</h3></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'advice' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-success text-white rounded-2"><i class="ti ti-stethoscope"></i></div><div><h2 class="mb-2 fs-6">{% trans "Advice sent" %}</h2><h3 class="fw-bold mb-0">{{ total_sent_advice }}</h3></div></div></a></div>
+    <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'messages' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-warning text-white rounded-2"><i class="ti ti-message"></i></div><div><h2 class="mb-2 fs-6">{% trans "New care messages" %}</h2><h3 class="fw-bold mb-0">{{ unread_messages }}</h3></div></div></a></div>
     <div class="col-lg-3 col-12"><a class="card p-4 h-100" href="{% url 'reminders' %}"><div class="d-flex gap-3"><div class="icon-shape icon-md bg-danger text-white rounded-2"><i class="ti ti-clock-heart"></i></div><div><h2 class="mb-2 fs-6">{% trans "Create medication reminders" %}</h2><h3 class="fw-bold mb-0">{{ total_reminders }}</h3></div></div></a></div>
   </div>
 {% else %}

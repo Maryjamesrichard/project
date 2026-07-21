@@ -42,6 +42,27 @@
       </div>
     </div>
 
+    <div class="card mb-3">
+      <div class="card-body p-4">
+        <h2 class="fs-5 mb-3">{% trans "Conversation" %}</h2>
+        {% for reply in reply_messages %}
+          <div class="border rounded-2 p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <strong>{{ reply.sender }}</strong> {% trans "to" %} <strong>{{ reply.recipient }}</strong>
+              </div>
+              <span class="small text-secondary">{{ reply.created_at|date:"M d, Y H:i" }}</span>
+            </div>
+            <h3 class="fs-6 mb-1">{{ reply.subject }}</h3>
+            {% if reply.body %}<div>{{ reply.body|linebreaks }}</div>{% endif %}
+            {% if reply.voice_file %}<audio controls class="w-100"><source src="{{ reply.voice_file.url }}" type="audio/webm"></audio>{% endif %}
+          </div>
+        {% empty %}
+          <p class="text-secondary mb-0">{% trans "No replies yet." %}</p>
+        {% endfor %}
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-body p-4">
         <h2 class="fs-5 mb-3">{% trans "Doctor Feedback" %}</h2>
@@ -59,9 +80,41 @@
     </div>
   </div>
 
-  {% if can_doctor_review %}
-    <div class="col-lg-4">
-      <div class="card mb-3">
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-body p-4">
+        <h2 class="fs-5 mb-3">{% trans "Send Reply" %}</h2>
+        {% if reply_form %}
+          <form method="post" enctype="multipart/form-data" data-recorder-form>
+            {% csrf_token %}
+            <input type="hidden" name="action" value="reply">
+            {{ reply_form.non_field_errors }}
+            {{ reply_form.patient }}
+            <div class="mb-3"><label class="form-label" for="{{ reply_form.subject.id_for_label }}">{% trans "Subject" %}</label>{{ reply_form.subject }}{{ reply_form.subject.errors }}</div>
+            <div class="mb-3"><label class="form-label" for="{{ reply_form.message_type.id_for_label }}">{% trans "Message Type" %}</label>{{ reply_form.message_type }}{{ reply_form.message_type.errors }}</div>
+            <div class="mb-3" data-text-section><label class="form-label" for="{{ reply_form.body.id_for_label }}">{% trans "Text Message" %}</label>{{ reply_form.body }}{{ reply_form.body.errors }}</div>
+            <div class="mb-3" data-voice-section>
+              <label class="form-label">{% trans "Record Voice Message" %}</label>
+              {{ reply_form.voice_file }}{{ reply_form.voice_file.errors }}
+              <div class="border rounded-2 p-3">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <button type="button" class="btn btn-outline-primary" data-record-start>{% trans "Start Recording" %}</button>
+                  <button type="button" class="btn btn-outline-secondary" data-record-stop disabled>{% trans "Stop Recording" %}</button>
+                  <button type="button" class="btn btn-outline-danger d-none" data-record-delete>{% trans "Delete / Record Again" %}</button>
+                </div>
+                <audio class="w-100 d-none" controls data-audio-preview></audio>
+                <p class="small text-secondary mb-0" data-record-status>{% trans "Use your browser microphone to record a reply." %}</p>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit">{% trans "Send Reply" %}</button>
+          </form>
+        {% else %}
+          <p class="text-secondary mb-0">{% trans "No reply form is available for your role on this message." %}</p>
+        {% endif %}
+      </div>
+    </div>
+    {% if can_doctor_review %}
+      <div class="card">
         <div class="card-body p-4">
           <h2 class="fs-5 mb-3">{% trans "Appointment Needed" %}</h2>
           <form method="post">
@@ -95,15 +148,15 @@
                   <button type="button" class="btn btn-outline-danger d-none" data-record-delete>{% trans "Delete / Record Again" %}</button>
                 </div>
                 <audio class="w-100 d-none" controls data-audio-preview></audio>
-                <p class="small text-secondary mb-0" data-record-status>Use your browser microphone to record feedback.</p>
+                <p class="small text-secondary mb-0" data-record-status>{% trans "Use your browser microphone to record feedback." %}</p>
               </div>
             </div>
             <button class="btn btn-primary" type="submit">{% trans "Send Advice" %}</button>
           </form>
         </div>
       </div>
-    </div>
-  {% endif %}
+    {% endif %}
+  </div>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function () {

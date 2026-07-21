@@ -232,6 +232,13 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         related_name="received_health_messages",
     )
+    reply_to = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="replies",
+    )
     patient = models.ForeignKey(Patient, on_delete=models.SET_NULL, null=True, blank=True, related_name="messages")
     subject = models.CharField(max_length=200)
     body = models.TextField(blank=True)

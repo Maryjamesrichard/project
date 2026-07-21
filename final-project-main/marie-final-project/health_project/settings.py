@@ -27,9 +27,7 @@ SECRET_KEY = "django-insecure-+h(jzfa3v)dokrknmpg_93mmasf+gw-%%r7pj)s6&)sbqfcd)h
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "172.27.106.136",
-    "localhost",
-    "127.0.0.1",
+   "*"
 ]
 
 
@@ -50,7 +48,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "health_application.middleware.ProfileLanguageMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",

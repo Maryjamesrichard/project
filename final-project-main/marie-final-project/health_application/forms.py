@@ -3,6 +3,7 @@ import os
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 from .models import HealthRecord, MedicalAdvice, MedicationReminder, Message, Patient, Profile
 
@@ -40,17 +41,19 @@ class BootstrapFormMixin:
                 widget.attrs.setdefault("class", "form-control")
 
 
+from django.utils.translation import gettext_lazy as _
+
 def validate_audio_file(file_obj):
     if not file_obj:
         return
     extension = os.path.splitext(file_obj.name.lower())[1]
     if extension not in AUDIO_EXTENSIONS:
-        raise forms.ValidationError("Record audio in mp3, wav, m4a, webm, or ogg format.")
+        raise forms.ValidationError(_("Record audio in mp3, wav, m4a, webm, or ogg format."))
     if file_obj.size > MAX_AUDIO_SIZE:
-        raise forms.ValidationError("Audio must be 10MB or smaller.")
+        raise forms.ValidationError(_("Audio must be 10MB or smaller."))
     content_type = getattr(file_obj, "content_type", "")
     if content_type and content_type not in AUDIO_CONTENT_TYPES and not content_type.startswith("audio/"):
-        raise forms.ValidationError("The recorded file must be an audio file.")
+        raise forms.ValidationError(_("The recorded file must be an audio file."))
 
 
 class RegisterForm(BootstrapFormMixin, UserCreationForm):
@@ -200,11 +203,11 @@ class MedicationReminderForm(BootstrapFormMixin, forms.ModelForm):
         number_of_days = cleaned.get("number_of_days")
         start_date = cleaned.get("start_date")
         if repeat_type == MedicationReminder.REPEAT_CUSTOM and not days:
-            self.add_error("days_of_week", "Choose at least one day for custom reminders.")
+            self.add_error("days_of_week", _("Choose at least one day for custom reminders."))
         if end_date and start_date and end_date < start_date:
-            self.add_error("end_date", "End date cannot be before start date.")
+            self.add_error("end_date", _("End date cannot be before start date."))
         if end_date and number_of_days:
-            self.add_error("number_of_days", "Use either end date or number of days, not both.")
+            self.add_error("number_of_days", _("Use either end date or number of days, not both."))
         return cleaned
 
 
@@ -228,14 +231,14 @@ class MessageForm(BootstrapFormMixin, forms.ModelForm):
         body = (cleaned.get("body") or "").strip()
         voice_file = cleaned.get("voice_file")
         if message_type == Message.TYPE_TEXT and not body:
-            self.add_error("body", "Enter a text message.")
+            self.add_error("body", _( "Enter a text message." ))
         if message_type == Message.TYPE_VOICE and not voice_file:
-            self.add_error("voice_file", "Record a voice note before sending.")
+            self.add_error("voice_file", _( "Record a voice note before sending." ))
         if message_type == Message.TYPE_BOTH:
             if not body:
-                self.add_error("body", "Enter the text part of this message.")
+                self.add_error("body", _( "Enter the text part of this message." ))
             if not voice_file:
-                self.add_error("voice_file", "Record the voice part of this message.")
+                self.add_error("voice_file", _( "Record the voice part of this message." ))
         return cleaned
 
 
@@ -259,12 +262,12 @@ class MedicalAdviceForm(BootstrapFormMixin, forms.ModelForm):
         advice_text = (cleaned.get("advice_text") or "").strip()
         voice_file = cleaned.get("voice_file")
         if message_type == MedicalAdvice.TYPE_TEXT and not advice_text:
-            self.add_error("advice_text", "Enter medical advice text.")
+            self.add_error("advice_text", _( "Enter medical advice text." ))
         if message_type == MedicalAdvice.TYPE_VOICE and not voice_file:
-            self.add_error("voice_file", "Record voice feedback before sending.")
+            self.add_error("voice_file", _( "Record voice feedback before sending." ))
         if message_type == MedicalAdvice.TYPE_BOTH:
             if not advice_text:
-                self.add_error("advice_text", "Enter the text part of this advice.")
+                self.add_error("advice_text", _( "Enter the text part of this advice." ))
             if not voice_file:
-                self.add_error("voice_file", "Record the voice part of this advice.")
+                self.add_error("voice_file", _( "Record the voice part of this advice." ))
         return cleaned

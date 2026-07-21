@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.utils.translation import gettext as _
 from django.db.models import Q
 from django.http import FileResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -160,6 +161,15 @@ def logout_view(request):
 def dashboard(request):
     role = role_for(request.user)
     patients_qs = visible_patients(request.user)
+    total_sent_advice = MedicalAdvice.objects.filter(doctor=request.user).count() if role == Profile.ROLE_DOCTOR else None
+    total_advice = (
+        total_sent_advice if role == Profile.ROLE_DOCTOR else MedicalAdvice.objects.filter(patient__in=patients_qs).count()
+    )
+    latest_advice = (
+        MedicalAdvice.objects.filter(doctor=request.user).select_related("patient", "doctor")[:5]
+        if role == Profile.ROLE_DOCTOR
+        else MedicalAdvice.objects.filter(patient__in=patients_qs).select_related("patient", "doctor")[:5]
+    )
     context = {
         "role": role,
         "total_patients": patients_qs.count(),
@@ -167,11 +177,13 @@ def dashboard(request):
         "active_reminder_count": MedicationReminder.objects.filter(patient__in=patients_qs, is_active=True).count(),
         "total_health_records": HealthRecord.objects.filter(patient__in=patients_qs).count(),
         "total_messages": Message.objects.filter(Q(recipient=request.user) | Q(sender=request.user)).count(),
-        "total_advice": MedicalAdvice.objects.filter(patient__in=patients_qs).count(),
+        "total_advice": total_advice,
+        "total_sent_advice": total_sent_advice,
         "total_notifications": request.user.notifications.count(),
         "recent_patients": patients_qs.order_by("-created_at")[:5],
         "active_reminders": MedicationReminder.objects.filter(patient__in=patients_qs, is_active=True).select_related("patient")[:5],
-        "latest_advice": MedicalAdvice.objects.filter(patient__in=patients_qs).select_related("patient", "doctor")[:5],
+        "latest_advice": latest_advice,
+        "recent_advice": latest_advice,
         "recent_messages": Message.objects.filter(Q(recipient=request.user) | Q(sender=request.user)).select_related("sender", "recipient", "patient")[:5],
         "recent_health_records": HealthRecord.objects.filter(patient__in=patients_qs).select_related("patient", "doctor")[:5],
         "unread_messages": Message.objects.filter(recipient=request.user, is_read=False).count(),
@@ -373,8 +385,28 @@ def mark_reminder_taken_api(request, pk):
 
 @login_required
 def inbox(request):
-    messages_qs = Message.objects.filter(recipient=request.user).select_related("sender", "recipient", "patient")
-    return render(request, "health_application/messages.html", {"messages_list": messages_qs, "box": "Inbox"})
+    root_threads = (
+        Message.objects.filter(Q(sender=request.user) | Q(recipient=request.user), reply_to__isnull=True)
+        .select_related("sender", "recipient", "patient")
+        .order_by("-created_at")
+    )
+    threads = []
+    for root in root_threads:
+        latest_reply = root.replies.select_related("sender", "recipient").order_by("-created_at").first()
+        last_message = latest_reply or root
+        unread_count = Message.objects.filter(
+            Q(pk=root.pk) | Q(reply_to=root), recipient=request.user, is_read=False
+        ).count()
+        participant = root.recipient if root.sender_id == request.user.id else root.sender
+        threads.append(
+            {
+                "root": root,
+                "last_message": last_message,
+                "participant": participant,
+                "unread_count": unread_count,
+            }
+        )
+    return render(request, "health_application/messages.html", {"threads": threads, "box": "Chat"})
 
 
 @login_required
@@ -424,6 +456,8 @@ def message_detail(request, pk):
         message_obj.is_read = True
         message_obj.reviewed_at = timezone.now()
         message_obj.save(update_fields=["is_read", "reviewed_at"])
+    reply_form = None
+    reply_messages = message_obj.replies.select_related("sender", "recipient").order_by("created_at")
     if can_doctor_review:
         advice_form = MedicalAdviceForm(
             request.POST or None,
@@ -432,37 +466,91 @@ def message_detail(request, pk):
         )
         advice_form.fields["patient"].queryset = Patient.objects.filter(pk=message_obj.patient_id)
         advice_form.fields["patient"].widget = advice_form.fields["patient"].hidden_widget()
-        if request.method == "POST":
-            action = request.POST.get("action")
-            if action == "appointment":
-                message_obj.appointment_needed = request.POST.get("appointment_needed") == "1"
-                message_obj.is_read = True
-                message_obj.reviewed_at = message_obj.reviewed_at or timezone.now()
-                message_obj.save(update_fields=["appointment_needed", "is_read", "reviewed_at"])
-                status = "needed" if message_obj.appointment_needed else "not needed"
-                create_notification(message_obj.sender, "Appointment decision", f"Appointment {status} for {message_obj.patient.full_name}.", "APPOINTMENT", message_obj)
-                messages.success(request, "Appointment decision saved.")
-                return redirect("message_detail", pk=message_obj.pk)
-            if action == "advice" and advice_form.is_valid():
-                advice_obj = advice_form.save(commit=False)
-                advice_obj.doctor = request.user
-                advice_obj.patient = message_obj.patient
-                advice_obj.source_message = message_obj
-                advice_obj.save()
-                create_notification(message_obj.sender, "Doctor feedback", advice_obj.title, "ADVICE", message_obj)
-                messages.success(request, "Doctor feedback sent successfully.")
-                return redirect("message_detail", pk=message_obj.pk)
+    else:
+        advice_form = None
+
+    if request.user == message_obj.recipient or request.user == message_obj.sender or can_doctor_review:
+        reply_form = MessageForm(
+            request.POST or None,
+            request.FILES or None,
+            initial={"patient": message_obj.patient, "subject": f"Re: {message_obj.subject}"},
+        )
+        if message_obj.patient_id:
+            reply_form.fields["patient"].queryset = Patient.objects.filter(pk=message_obj.patient_id)
+        else:
+            reply_form.fields["patient"].queryset = Patient.objects.none()
+        reply_form.fields["patient"].widget = reply_form.fields["patient"].hidden_widget()
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "appointment" and can_doctor_review:
+            message_obj.appointment_needed = request.POST.get("appointment_needed") == "1"
+            message_obj.is_read = True
+            message_obj.reviewed_at = message_obj.reviewed_at or timezone.now()
+            message_obj.save(update_fields=["appointment_needed", "is_read", "reviewed_at"])
+            status = "needed" if message_obj.appointment_needed else "not needed"
+            create_notification(
+                message_obj.sender,
+                _( "Appointment decision" ),
+                _( "Appointment %(status)s for %(patient)s." ) % {"status": status, "patient": message_obj.patient.full_name if message_obj.patient else ""},
+                "APPOINTMENT",
+                message_obj,
+            )
+            messages.success(request, _( "Appointment decision saved." ))
+            return redirect("message_detail", pk=message_obj.pk)
+        if action == "advice" and can_doctor_review and advice_form and advice_form.is_valid():
+            advice_obj = advice_form.save(commit=False)
+            advice_obj.doctor = request.user
+            advice_obj.patient = message_obj.patient
+            advice_obj.source_message = message_obj
+            advice_obj.save()
+            create_notification(
+                message_obj.sender,
+                _( "Doctor feedback" ),
+                advice_obj.title,
+                "ADVICE",
+                message_obj,
+            )
+            messages.success(request, _( "Doctor feedback sent successfully." ))
+            return redirect("message_detail", pk=message_obj.pk)
+        if action == "reply" and reply_form and reply_form.is_valid():
+            reply_message = reply_form.save(commit=False)
+            reply_message.sender = request.user
+            reply_message.recipient = message_obj.sender if request.user == message_obj.recipient else message_obj.recipient
+            reply_message.reply_to = message_obj
+            reply_message.patient = message_obj.patient
+            reply_message.save()
+            create_notification(
+                reply_message.recipient,
+                _( "New reply message" ),
+                reply_message.subject,
+                "MESSAGE",
+                reply_message,
+            )
+            messages.success(request, _( "Reply sent successfully." ))
+            return redirect("message_detail", pk=message_obj.pk)
+
     return render(
         request,
         "health_application/message_detail.html",
-        {"message_obj": message_obj, "advice_form": advice_form, "can_doctor_review": can_doctor_review},
+        {
+            "message_obj": message_obj,
+            "advice_form": advice_form,
+            "reply_form": reply_form,
+            "can_doctor_review": can_doctor_review,
+            "reply_messages": reply_messages,
+        },
     )
 
 
 @login_required
 def advice(request):
     patients_qs = visible_patients(request.user)
-    advice_qs = MedicalAdvice.objects.filter(patient__in=patients_qs).select_related("doctor", "patient")
+    advice_qs = (
+        MedicalAdvice.objects.filter(doctor=request.user).select_related("doctor", "patient")
+        if is_doctor(request.user)
+        else MedicalAdvice.objects.filter(patient__in=patients_qs).select_related("doctor", "patient")
+    )
     form = None
     if is_doctor(request.user) or is_admin(request.user):
         form = MedicalAdviceForm(request.POST or None, request.FILES or None)
@@ -471,8 +559,8 @@ def advice(request):
             advice_obj = form.save(commit=False)
             advice_obj.doctor = request.user
             advice_obj.save()
-            create_notification(advice_obj.patient.user, "Doctor feedback", advice_obj.title, "ADVICE")
-            messages.success(request, "Medical advice sent successfully.")
+            create_notification(advice_obj.patient.user, _( "Doctor feedback" ), advice_obj.title, "ADVICE")
+            messages.success(request, _( "Medical advice sent successfully." ))
             return redirect("advice")
     return render(request, "health_application/advice.html", {"advice_list": advice_qs, "form": form})
 
