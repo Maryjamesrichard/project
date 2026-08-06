@@ -1,7 +1,7 @@
 {% extends "health_application/base.html" %}
-{% load i18n %}
+{% load i18n dynamic_i18n %}
 
-{% block title %}{{ message_obj.subject }} - {% trans "Mobile Health Support System" %}{% endblock %}
+{% block title %}{{ message_obj.subject|translate_dynamic }} - {% trans "Mobile Health Support System" %}{% endblock %}
 
 {% block content %}
 <div class="row g-3">
@@ -10,10 +10,10 @@
       <div class="card-body p-4">
         <div class="d-flex justify-content-between align-items-start mb-4">
           <div>
-            <h1 class="fs-3 mb-1">{{ message_obj.subject }}</h1>
+            <h1 class="fs-3 mb-1">{{ message_obj.subject|translate_dynamic }}</h1>
             <p class="mb-0 text-secondary">{% trans "From" %} {{ message_obj.sender }} {% trans "to" %} {{ message_obj.recipient }} - {{ message_obj.created_at|date:"M d, Y H:i" }}</p>
           </div>
-          <span class="badge bg-primary">{{ message_obj.get_message_type_display }}</span>
+          <span class="badge bg-primary">{{ message_obj.get_message_type_display|translate_dynamic }}</span>
         </div>
         {% if message_obj.patient %}
           <div class="border rounded-2 p-3 mb-3">
@@ -21,13 +21,13 @@
             <div class="row small g-2">
               <div class="col-md-6"><strong>{% trans "Name" %}:</strong> {{ message_obj.patient.full_name }}</div>
               <div class="col-md-3"><strong>{% trans "Age" %}:</strong> {{ message_obj.patient.age }}</div>
-              <div class="col-md-3"><strong>{% trans "Gender" %}:</strong> {{ message_obj.patient.gender }}</div>
-              <div class="col-md-6"><strong>{% trans "Condition" %}:</strong> {{ message_obj.patient.medical_condition|default:"-" }}</div>
-              <div class="col-md-6"><strong>{% trans "Status" %}:</strong> {{ message_obj.patient.status }}</div>
+              <div class="col-md-3"><strong>{% trans "Gender" %}:</strong> {{ message_obj.patient.get_gender_display|translate_dynamic }}</div>
+              <div class="col-md-6"><strong>{% trans "Condition" %}:</strong> {{ message_obj.patient.medical_condition|default:"-"|translate_dynamic }}</div>
+              <div class="col-md-6"><strong>{% trans "Status" %}:</strong> {{ message_obj.patient.get_status_display|translate_dynamic }}</div>
             </div>
           </div>
         {% endif %}
-        {% if message_obj.body %}<div class="border rounded-2 p-3 mb-3">{{ message_obj.body|linebreaks }}</div>{% endif %}
+        {% if message_obj.body %}<div class="border rounded-2 p-3 mb-3">{{ message_obj.body|translate_dynamic|linebreaks }}</div>{% endif %}
         {% if message_obj.voice_file %}
           <div class="mb-3">
             <label class="form-label">{% trans "Caregiver Voice Note" %}</label>
@@ -53,8 +53,8 @@
               </div>
               <span class="small text-secondary">{{ reply.created_at|date:"M d, Y H:i" }}</span>
             </div>
-            <h3 class="fs-6 mb-1">{{ reply.subject }}</h3>
-            {% if reply.body %}<div>{{ reply.body|linebreaks }}</div>{% endif %}
+            <h3 class="fs-6 mb-1">{{ reply.subject|translate_dynamic }}</h3>
+            {% if reply.body %}<div>{{ reply.body|translate_dynamic|linebreaks }}</div>{% endif %}
             {% if reply.voice_file %}<audio controls class="w-100"><source src="{{ reply.voice_file.url }}" type="audio/webm"></audio>{% endif %}
           </div>
         {% empty %}
@@ -68,9 +68,9 @@
         <h2 class="fs-5 mb-3">{% trans "Doctor Feedback" %}</h2>
         {% for advice in message_obj.medical_advice.all %}
           <div class="border rounded-2 p-3 mb-3">
-            <h3 class="fs-6 mb-1">{{ advice.title }}</h3>
-            <p class="small text-secondary mb-2">{{ advice.created_at|date:"M d, Y H:i" }} - {{ advice.get_message_type_display }}</p>
-            {% if advice.advice_text %}<div>{{ advice.advice_text|linebreaks }}</div>{% endif %}
+            <h3 class="fs-6 mb-1">{{ advice.title|translate_dynamic }}</h3>
+            <p class="small text-secondary mb-2">{{ advice.created_at|date:"M d, Y H:i" }} - {{ advice.get_message_type_display|translate_dynamic }}</p>
+            {% if advice.advice_text %}<div>{{ advice.advice_text|translate_dynamic|linebreaks }}</div>{% endif %}
             {% if advice.voice_file %}<audio controls class="w-100"><source src="{{ advice.voice_file.url }}" type="audio/webm"></audio>{% endif %}
           </div>
         {% empty %}

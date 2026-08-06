@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static i18n dynamic_i18n %}
 <!DOCTYPE html>
 <html lang="{{ request.LANGUAGE_CODE|default:'en' }}">
 <head>
@@ -43,8 +43,8 @@
                       <span class="fw-semibold">{{ request.user.get_username|slice:':1'|upper|default:'U' }}</span>
                     </div>
                     <div class="flex-grow-1 small">
-                      <p class="mb-0">{{ notification.title }}</p>
-                      <p class="mb-1">{{ notification.message|truncatechars:80 }}</p>
+                      <p class="mb-0">{{ notification.title|translate_dynamic }}</p>
+                      <p class="mb-1">{{ notification.message|translate_dynamic|truncatechars:80 }}</p>
                       <div class="text-secondary">{{ notification.created_at|timesince }} {% trans "ago" %}</div>
                     </div>
                   </div>
@@ -71,7 +71,7 @@
               </div>
               <div>
                 <h4 class="mb-0 small">{{ request.user.get_username }}</h4>
-                <p class="mb-0 small">{{ request.user.profile.get_role_display|default:"Health user" }}</p>
+                <p class="mb-0 small">{{ request.user.profile.get_role_display|default:"Health user"|translate_dynamic }}</p>
               </div>
             </div>
             <div class="p-3 d-flex flex-column gap-1 small lh-lg">

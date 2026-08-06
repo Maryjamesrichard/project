@@ -1,5 +1,5 @@
 {% extends "health_application/base.html" %}
-{% load i18n %}
+{% load i18n dynamic_i18n %}
 
 {% block title %}{% trans "Doctor Feedback" %} - {% trans "Mobile Health Support System" %}{% endblock %}
 
@@ -36,9 +36,9 @@
   <div class="{% if form %}col-lg-7{% else %}col-12{% endif %}">
     {% for item in advice_list %}
       <div class="card mb-3"><div class="card-body p-4">
-        <h2 class="fs-5 mb-1">{{ item.title }}</h2>
-        <p class="text-secondary small">{% trans "For" %} {{ item.patient.full_name }} {% trans "by" %} {{ item.doctor }} - {{ item.created_at|date:"M d, Y H:i" }} - {{ item.get_message_type_display }}</p>
-        {% if item.advice_text %}<div>{{ item.advice_text|linebreaks }}</div>{% endif %}
+        <h2 class="fs-5 mb-1">{{ item.title|translate_dynamic }}</h2>
+        <p class="text-secondary small">{% trans "For" %} {{ item.patient.full_name }} {% trans "by" %} {{ item.doctor }} - {{ item.created_at|date:"M d, Y H:i" }} - {{ item.get_message_type_display|translate_dynamic }}</p>
+        {% if item.advice_text %}<div>{{ item.advice_text|translate_dynamic|linebreaks }}</div>{% endif %}
         {% if item.voice_file %}<audio controls class="w-100"><source src="{{ item.voice_file.url }}" type="audio/webm"></audio>{% endif %}
       </div></div>
     {% empty %}

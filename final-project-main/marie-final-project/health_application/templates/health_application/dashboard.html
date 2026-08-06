@@ -1,5 +1,5 @@
 {% extends "health_application/base.html" %}
-{% load i18n %}
+{% load i18n dynamic_i18n %}
 
 {% block title %}{% trans "Dashboard" %} - {% trans "Mobile Health Support System" %}{% endblock %}
 
@@ -8,7 +8,7 @@
   <div class="col-12">
     <div class="mb-6">
       <h1 class="fs-3 mb-1">{% trans "Dashboard" %}</h1>
-      <p>{% trans "Web health support summary for" %} {{ request.user.profile.get_role_display|default:"your role" }}.</p>
+      <p>{% trans "Web health support summary for" %} {{ request.user.profile.get_role_display|default:"your role"|translate_dynamic }}.</p>
     </div>
   </div>
 </div>
@@ -45,7 +45,7 @@
       <div class="card-header bg-white px-4 py-3"><h3 class="h5 mb-0">{% if role == "DOCTOR" %}{% trans "Recent Caregiver Messages" %}{% else %}{% trans "Recent Messages" %}{% endif %}</h3></div>
       <ul class="list-group list-group-flush">
         {% for item in recent_messages %}
-          <li class="list-group-item p-3"><a href="{% url 'message_detail' item.id %}">{{ item.subject }}</a><div class="small text-secondary">{% if item.patient %}{{ item.patient }}{% else %}{% trans "No patient" %}{% endif %} - {{ item.created_at|date:"M d, Y H:i" }}</div></li>
+          <li class="list-group-item p-3"><a href="{% url 'message_detail' item.id %}">{{ item.subject|translate_dynamic }}</a><div class="small text-secondary">{% if item.patient %}{{ item.patient }}{% else %}{% trans "No patient" %}{% endif %} - {{ item.created_at|date:"M d, Y H:i" }}</div></li>
         {% empty %}
           <li class="list-group-item p-4 text-secondary">{% trans "No recent messages." %}</li>
         {% endfor %}
@@ -58,7 +58,7 @@
         <thead class="table-light border-light"><tr><th>{% if role == "DOCTOR" %}{% trans "Assigned Patient" %}{% else %}{% trans "Patient Information" %}{% endif %}</th><th>{% trans "Status" %}</th><th>{% trans "Condition" %}</th></tr></thead>
         <tbody>
           {% for patient in recent_patients %}
-            <tr><td><a href="{% url 'patient_detail' patient.id %}">{{ patient.full_name }}</a></td><td>{{ patient.status }}</td><td>{{ patient.medical_condition|default:"-" }}</td></tr>
+            <tr><td><a href="{% url 'patient_detail' patient.id %}">{{ patient.full_name }}</a></td><td>{{ patient.get_status_display|translate_dynamic }}</td><td>{{ patient.medical_condition|default:"-"|translate_dynamic }}</td></tr>
           {% empty %}
             <tr><td colspan="3" class="text-secondary p-4">{% trans "No patients have been added." %}</td></tr>
           {% endfor %}

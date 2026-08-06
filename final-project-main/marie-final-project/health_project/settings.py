@@ -11,6 +11,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,6 +129,12 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
+
+# Optional runtime translation for database-backed text. Point this at a
+# self-hosted LibreTranslate instance, or install Argos Translate and its en-sw
+# model for fully local/offline translation.
+LIBRETRANSLATE_URL = os.environ.get("LIBRETRANSLATE_URL", "")
+LIBRETRANSLATE_API_KEY = os.environ.get("LIBRETRANSLATE_API_KEY", "")
 
 
 # Static files (CSS, JavaScript, Images)

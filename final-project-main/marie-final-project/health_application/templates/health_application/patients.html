@@ -1,5 +1,5 @@
 {% extends "health_application/base.html" %}
-{% load i18n %}
+{% load i18n dynamic_i18n %}
 
 {% block title %}{% trans "Patients" %} - {% trans "Mobile Health Support System" %}{% endblock %}
 
@@ -34,11 +34,11 @@
           {% for patient in patients %}
             <tr class="align-middle">
               <td><a href="{% url 'patient_detail' patient.id %}"><span class="avatar avatar-md rounded bg-primary bg-opacity-10 text-primary me-3 d-inline-flex align-items-center justify-content-center"><i class="ti ti-user"></i></span>{{ patient.full_name }}</a></td>
-              <td>{{ patient.gender }}</td>
+              <td>{{ patient.get_gender_display|translate_dynamic }}</td>
               <td>{{ patient.age }}</td>
-              <td>{{ patient.status }}</td>
+              <td>{{ patient.get_status_display|translate_dynamic }}</td>
               <td>{{ patient.assigned_doctor|default:"-" }}</td>
-              <td>{{ patient.medical_condition|default:"-" }}</td>
+              <td>{{ patient.medical_condition|default:"-"|translate_dynamic }}</td>
               <td>
                 <a href="{% url 'patient_detail' patient.id %}"><i class="ti ti-eye"></i></a>
                 {% if request.user.profile.role != "DOCTOR" %}

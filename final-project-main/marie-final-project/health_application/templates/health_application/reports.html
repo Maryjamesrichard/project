@@ -1,5 +1,5 @@
 {% extends "health_application/base.html" %}
-{% load i18n %}
+{% load i18n dynamic_i18n %}
 
 {% block title %}{% trans "Health Reports" %} - {% trans "Mobile Health Support System" %}{% endblock %}
 
@@ -61,7 +61,7 @@
               <div class="me-3"><span class="avatar avatar-md rounded bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center"><i class="ti ti-user"></i></span></div>
               <div class="flex-grow-1">
                 <h6 class="mb-1">{{ patient.full_name }}</h6>
-                <p class="mb-0 small text-muted">{{ patient.medical_condition|default:"No condition listed" }}</p>
+                <p class="mb-0 small text-muted">{{ patient.medical_condition|default:"No condition listed"|translate_dynamic }}</p>
               </div>
               <span class="badge bg-success-subtle text-success">{% trans "Active" %}</span>
             </div>

@@ -1,5 +1,5 @@
 {% extends "health_application/base.html" %}
-{% load i18n %}
+{% load i18n dynamic_i18n %}
 
 {% block title %}{{ box }} {% trans "Messages" %} - {% trans "Mobile Health Support System" %}{% endblock %}
 
@@ -16,7 +16,7 @@
     <tbody>
       {% for item in threads %}
         <tr class="{% if item.unread_count > 0 %}table-primary{% endif %}">
-          <td><a href="{% url 'message_detail' item.root.id %}">{{ item.root.subject }}</a></td>
+          <td><a href="{% url 'message_detail' item.root.id %}">{{ item.root.subject|translate_dynamic }}</a></td>
           <td>{{ item.participant }}</td>
           <td>{{ item.root.patient|default:"-" }}</td>
           <td>{{ item.last_message.created_at|date:"M d, Y H:i" }}</td>

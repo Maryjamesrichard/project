@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import translation
 
+from .dynamic_translation import translate_dynamic
 from .models import MedicalAdvice, Message, Notification, Patient, Profile
 
 
@@ -23,6 +25,55 @@ class DashboardContextTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["total_advice"], 2)
         self.assertEqual(response.context["total_notifications"], 2)
+
+    def test_swahili_preference_translates_navigation_links(self):
+        self.profile.language_preference = "sw"
+        self.profile.save(update_fields=["language_preference"])
+
+        self.client.login(username="patient", password="secret123")
+        response = self.client.get(reverse("dashboard"))
+
+        self.assertEqual(response.headers["Content-Language"], "sw")
+        self.assertContains(response, "Dashibodi")
+        self.assertContains(response, "Taarifa za Mgonjwa")
+        self.assertContains(response, "Rekodi ujumbe wa sauti")
+        self.assertContains(response, "Vikumbusho")
+        self.assertNotContains(response, '<span class="nav-text">Dashboard</span>', html=True)
+        self.assertNotContains(response, '<span class="nav-text">Reminders</span>', html=True)
+
+    def test_language_preference_persists_across_navigation(self):
+        self.client.login(username="patient", password="secret123")
+
+        response = self.client.post(reverse("profile"), {"language_preference": "sw"})
+        self.assertRedirects(response, reverse("profile"))
+        self.assertEqual(response.cookies["django_language"].value, "sw")
+
+        for page_name in ("dashboard", "patients", "messages", "reminders"):
+            response = self.client.get(reverse(page_name))
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.headers["Content-Language"], "sw")
+            self.assertEqual(response.context["request"].LANGUAGE_CODE, "sw")
+
+    def test_swahili_translates_database_backed_status_and_notification(self):
+        self.profile.language_preference = "sw"
+        self.profile.save(update_fields=["language_preference"])
+        self.patient.status = "Needs Attention"
+        self.patient.save(update_fields=["status"])
+        Notification.objects.create(user=self.user, title="Pending", message="Stable")
+
+        self.client.login(username="patient", password="secret123")
+        response = self.client.get(reverse("dashboard"))
+
+        self.assertContains(response, "Anahitaji Uangalizi")
+        self.assertNotContains(response, ">Needs Attention<")
+
+        notification_response = self.client.get(reverse("notifications"))
+        self.assertContains(notification_response, "Inasubiri")
+        self.assertContains(notification_response, "Imara")
+
+    def test_dynamic_translation_leaves_english_unchanged(self):
+        with translation.override("en"):
+            self.assertEqual(translate_dynamic("Needs Attention"), "Needs Attention")
 
     def test_doctor_dashboard_shows_sent_advice_count(self):
         doctor = get_user_model().objects.create_user(username="doctor", password="secret123")

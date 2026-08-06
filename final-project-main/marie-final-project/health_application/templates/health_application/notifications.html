@@ -1,5 +1,5 @@
 {% extends "health_application/base.html" %}
-{% load i18n %}
+{% load i18n dynamic_i18n %}
 
 {% block title %}{% trans "Notifications" %} - {% trans "Mobile Health Support System" %}{% endblock %}
 
@@ -10,8 +10,8 @@
     {% for notification in notifications %}
       <li class="list-group-item p-4 d-flex justify-content-between gap-3 {% if not notification.is_read %}bg-primary bg-opacity-10{% endif %}">
         <div>
-          <h2 class="fs-6 mb-1">{{ notification.title }}</h2>
-          <p class="mb-1">{{ notification.message }}</p>
+          <h2 class="fs-6 mb-1">{{ notification.title|translate_dynamic }}</h2>
+          <p class="mb-1">{{ notification.message|translate_dynamic }}</p>
           <small class="text-secondary">{{ notification.created_at|date:"M d, Y H:i" }}</small>
           {% if notification.related_message %}
             <div class="mt-2"><a class="btn btn-sm btn-outline-primary" href="{% url 'message_detail' notification.related_message.id %}">{% trans "Open related message" %}</a></div>

@@ -1,5 +1,5 @@
 {% extends "health_application/base.html" %}
-{% load i18n %}
+{% load i18n dynamic_i18n %}
 
 {% block title %}{{ patient.full_name }} - {% trans "Mobile Health Support System" %}{% endblock %}
 
@@ -8,7 +8,7 @@
   <div class="col-12 d-flex justify-content-between align-items-center">
     <div>
       <h1 class="fs-3 mb-1">{{ patient.full_name }}</h1>
-      <p class="mb-0">{{ patient.status }}{% if patient.assigned_doctor %} - Dr. {{ patient.assigned_doctor.get_full_name|default:patient.assigned_doctor.username }}{% endif %}</p>
+      <p class="mb-0">{{ patient.get_status_display|translate_dynamic }}{% if patient.assigned_doctor %} - Dr. {{ patient.assigned_doctor.get_full_name|default:patient.assigned_doctor.username }}{% endif %}</p>
     </div>
     {% if request.user.profile.role != "DOCTOR" %}<a class="btn btn-primary" href="{% url 'patient_edit' patient.id %}">{% trans "Update Patient" %}</a>{% endif %}
   </div>
@@ -17,12 +17,12 @@
   <div class="col-lg-4">
     <div class="card h-100"><div class="card-body p-4">
       <h2 class="fs-5 mb-3">{% trans "Patient Information" %}</h2>
-      <p><strong>{% trans "Gender" %}:</strong> {{ patient.gender }}</p>
+      <p><strong>{% trans "Gender" %}:</strong> {{ patient.get_gender_display|translate_dynamic }}</p>
       <p><strong>{% trans "Age" %}:</strong> {{ patient.age }}</p>
       <p><strong>{% trans "Phone" %}:</strong> {{ patient.phone|default:"-" }}</p>
       <p><strong>{% trans "Emergency Contact" %}:</strong> {{ patient.emergency_contact|default:"-" }}</p>
       <p><strong>{% trans "Address" %}:</strong> {{ patient.address|default:"-" }}</p>
-      <p class="mb-0"><strong>{% trans "Condition" %}:</strong> {{ patient.medical_condition|default:"-" }}</p>
+      <p class="mb-0"><strong>{% trans "Condition" %}:</strong> {{ patient.medical_condition|default:"-"|translate_dynamic }}</p>
     </div></div>
   </div>
   <div class="col-lg-4">
@@ -39,7 +39,7 @@
     <div class="card h-100"><div class="card-body p-4">
       <h2 class="fs-5 mb-3">{% trans "Active Reminders" %}</h2>
       {% for reminder in patient.reminders.all|slice:":5" %}
-        <div class="border-bottom py-2 small">{{ reminder.medicine_name }} - {{ reminder.dosage }} at {{ reminder.reminder_time|time:"H:i" }}</div>
+        <div class="border-bottom py-2 small">{{ reminder.medicine_name|translate_dynamic }} - {{ reminder.dosage|translate_dynamic }} {% trans "at" %} {{ reminder.reminder_time|time:"H:i" }}</div>
       {% empty %}
         <p class="text-secondary mb-0">{% trans "No reminders yet." %}</p>
       {% endfor %}

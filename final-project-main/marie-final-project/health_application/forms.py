@@ -58,8 +58,8 @@ def validate_audio_file(file_obj):
 
 class RegisterForm(BootstrapFormMixin, UserCreationForm):
     ROLE_CHOICES = [
-        (Profile.ROLE_PATIENT, "Normal User / Patient / Caregiver"),
-        (Profile.ROLE_DOCTOR, "Doctor / Health Provider"),
+        (Profile.ROLE_PATIENT, _("Normal User / Patient / Caregiver")),
+        (Profile.ROLE_DOCTOR, _("Doctor / Health Provider")),
     ]
 
     email = forms.EmailField(required=True)
@@ -149,20 +149,20 @@ class HealthRecordForm(BootstrapFormMixin, forms.ModelForm):
 
 class MedicationReminderForm(BootstrapFormMixin, forms.ModelForm):
     DAY_CHOICES = [
-        (0, "Monday"),
-        (1, "Tuesday"),
-        (2, "Wednesday"),
-        (3, "Thursday"),
-        (4, "Friday"),
-        (5, "Saturday"),
-        (6, "Sunday"),
+        (0, _("Monday")),
+        (1, _("Tuesday")),
+        (2, _("Wednesday")),
+        (3, _("Thursday")),
+        (4, _("Friday")),
+        (5, _("Saturday")),
+        (6, _("Sunday")),
     ]
 
     days_of_week = forms.MultipleChoiceField(
         choices=DAY_CHOICES,
         required=False,
         widget=forms.CheckboxSelectMultiple,
-        help_text="Use when repeat type is custom days.",
+        help_text=_("Use when repeat type is custom days."),
     )
 
     class Meta:

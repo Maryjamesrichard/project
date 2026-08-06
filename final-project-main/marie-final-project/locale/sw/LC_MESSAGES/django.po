@@ -17,6 +17,94 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+# Database choice labels and form options
+msgid "Female"
+msgstr "Mwanamke"
+
+msgid "Male"
+msgstr "Mwanamume"
+
+msgid "Other"
+msgstr "Nyingine"
+
+msgid "Stable"
+msgstr "Imara"
+
+msgid "Needs Attention"
+msgstr "Anahitaji Uangalizi"
+
+msgid "Critical"
+msgstr "Mahututi"
+
+msgid "Recovering"
+msgstr "Anapata Nafuu"
+
+msgid "Once"
+msgstr "Mara moja"
+
+msgid "Daily"
+msgstr "Kila siku"
+
+msgid "Weekly"
+msgstr "Kila wiki"
+
+msgid "Custom days"
+msgstr "Siku maalum"
+
+msgid "Taken"
+msgstr "Imetumika"
+
+msgid "Missed"
+msgstr "Imepitwa"
+
+msgid "Pending"
+msgstr "Inasubiri"
+
+msgid "Text"
+msgstr "Maandishi"
+
+msgid "Voice"
+msgstr "Sauti"
+
+msgid "Text and Voice"
+msgstr "Maandishi na Sauti"
+
+msgid "Monday"
+msgstr "Jumatatu"
+
+msgid "Tuesday"
+msgstr "Jumanne"
+
+msgid "Wednesday"
+msgstr "Jumatano"
+
+msgid "Thursday"
+msgstr "Alhamisi"
+
+msgid "Friday"
+msgstr "Ijumaa"
+
+msgid "Saturday"
+msgstr "Jumamosi"
+
+msgid "Sunday"
+msgstr "Jumapili"
+
+msgid "Normal User / Patient / Caregiver"
+msgstr "Mtumiaji wa Kawaida / Mgonjwa / Mlezi"
+
+msgid "Doctor / Health Provider"
+msgstr "Daktari / Mtoa Huduma za Afya"
+
+msgid "Admin"
+msgstr "Msimamizi"
+
+msgid "Use when repeat type is custom days."
+msgstr "Tumia wakati aina ya kurudia ni siku maalum."
+
+msgid "at"
+msgstr "saa"
+
 #: health_application/forms.py:51
 msgid "Record audio in mp3, wav, m4a, webm, or ogg format."
 msgstr "Rekodi sauti katika muundo wa mp3, wav, m4a, webm, au ogg."
@@ -42,16 +130,14 @@ msgid "Use either end date or number of days, not both."
 msgstr "Tumia tarehe ya mwisho au idadi ya siku, si vyote viwili."
 
 #: health_application/forms.py:234
-#, fuzzy
 #| msgid "Open related message"
 msgid "Enter a text message."
-msgstr "Fungua ujumbe unaohusiana"
+msgstr "Weka ujumbe wa maandishi."
 
 #: health_application/forms.py:236
-#, fuzzy
 #| msgid "Record voice note"
 msgid "Record a voice note before sending."
-msgstr "Rekodi ujumbe wa sauti"
+msgstr "Rekodi ujumbe wa sauti kabla ya kutuma."
 
 #: health_application/forms.py:239
 msgid "Enter the text part of this message."
@@ -62,16 +148,14 @@ msgid "Record the voice part of this message."
 msgstr "Rekodi sehemu ya sauti ya ujumbe huu."
 
 #: health_application/forms.py:265
-#, fuzzy
 #| msgid "Send Medical Advice"
 msgid "Enter medical advice text."
-msgstr "Tuma Ushauri wa Kitabibu"
+msgstr "Weka maandishi ya ushauri wa kitabibu."
 
 #: health_application/forms.py:267
-#, fuzzy
 #| msgid "Record Voice Feedback"
 msgid "Record voice feedback before sending."
-msgstr "Rekodi Maoni ya Sauti"
+msgstr "Rekodi maoni ya sauti kabla ya kutuma."
 
 #: health_application/forms.py:270
 msgid "Enter the text part of this advice."
@@ -106,20 +190,18 @@ msgid "Mobile Health Support System"
 msgstr "Mfumo wa Usaidizi wa Afya kwa Simu"
 
 #: health_application/templates/health_application/404.html:14
-#, fuzzy
 #| msgid "No patients found."
 msgid "Page not found"
-msgstr "Hakuna wagonjwa waliopatikana."
+msgstr "Ukurasa haujapatikana"
 
 #: health_application/templates/health_application/404.html:15
 msgid "The requested health system page could not be found."
 msgstr "Ukurasa wa mfumo wa afya ulioombwa haukupatikana."
 
 #: health_application/templates/health_application/404.html:16
-#, fuzzy
 #| msgid "Dashboard"
 msgid "Back to Dashboard"
-msgstr "Dashibodi"
+msgstr "Rudi kwenye Dashibodi"
 
 #: health_application/templates/health_application/advice.html:4
 #: health_application/templates/health_application/advice.html:7
@@ -217,18 +299,16 @@ msgstr "Kivinjari hiki hakitumii kurekodi sauti ndani ya programu."
 
 #: health_application/templates/health_application/advice.html:53
 #: health_application/templates/health_application/message_detail.html:165
-#, fuzzy
 #| msgid "Record Voice Feedback"
 msgid "Voice feedback recorded. Preview it before sending."
-msgstr "Rekodi Maoni ya Sauti"
+msgstr "Maoni ya sauti yamerekodiwa. Yasikilize kabla ya kutuma."
 
 #: health_application/templates/health_application/advice.html:54
 #: health_application/templates/health_application/compose_message.html:57
 #: health_application/templates/health_application/message_detail.html:166
-#, fuzzy
 #| msgid "Stop Recording"
 msgid "Recording..."
-msgstr "Simamisha Kurekodi"
+msgstr "Inarekodi..."
 
 #: health_application/templates/health_application/advice.html:55
 #: health_application/templates/health_application/compose_message.html:58
@@ -444,16 +524,14 @@ msgid "Cancel"
 msgstr "Ghairi"
 
 #: health_application/templates/health_application/compose_message.html:56
-#, fuzzy
 #| msgid "Record voice note"
 msgid "Voice note recorded. Preview it before sending."
-msgstr "Rekodi ujumbe wa sauti"
+msgstr "Ujumbe wa sauti umerekodiwa. Usikilize kabla ya kutuma."
 
 #: health_application/templates/health_application/dashboard.html:11
-#, fuzzy
 #| msgid "Mobile health support summary for"
 msgid "Web health support summary for"
-msgstr "Muhtasari wa usaidizi wa afya kwa simu kwa"
+msgstr "Muhtasari wa usaidizi wa afya kupitia wavuti kwa"
 
 #: health_application/templates/health_application/dashboard.html:18
 msgid "Create patient information"
@@ -473,48 +551,42 @@ msgid "active"
 msgstr "vinavyofanya kazi"
 
 #: health_application/templates/health_application/dashboard.html:22
-#, fuzzy
 #| msgid "Notifications"
 msgid "notifications"
-msgstr "Arifa"
+msgstr "arifa"
 
 #: health_application/templates/health_application/dashboard.html:23
 msgid "Language and account"
 msgstr "Lugha na akaunti"
 
 #: health_application/templates/health_application/dashboard.html:28
-#, fuzzy
 #| msgid "No messages found."
 msgid "New messages received"
-msgstr "Hakuna ujumbe uliopatikana."
+msgstr "Ujumbe mpya uliopokelewa"
 
 #: health_application/templates/health_application/dashboard.html:29
-#, fuzzy
 #| msgid "Advice"
 msgid "Advice sent"
-msgstr "Ushauri"
+msgstr "Ushauri uliotumwa"
 
 #: health_application/templates/health_application/dashboard.html:30
-#, fuzzy
 #| msgid "Care messages"
 msgid "New care messages"
-msgstr "Ujumbe wa huduma"
+msgstr "Ujumbe mpya wa huduma"
 
 #: health_application/templates/health_application/dashboard.html:31
 msgid "Create medication reminders"
 msgstr "Tengeneza vikumbusho vya dawa"
 
 #: health_application/templates/health_application/dashboard.html:35
-#, fuzzy
 #| msgid "Username"
 msgid "Users"
-msgstr "Jina la mtumiaji"
+msgstr "Watumiaji"
 
 #: health_application/templates/health_application/dashboard.html:36
-#, fuzzy
 #| msgid "Doctor"
 msgid "Doctors"
-msgstr "Daktari"
+msgstr "Madaktari"
 
 #: health_application/templates/health_application/dashboard.html:45
 msgid "Recent Caregiver Messages"
@@ -525,10 +597,9 @@ msgid "Recent Messages"
 msgstr "Ujumbe wa Hivi Karibuni"
 
 #: health_application/templates/health_application/dashboard.html:48
-#, fuzzy
 #| msgid "No patients found."
 msgid "No patient"
-msgstr "Hakuna wagonjwa waliopatikana."
+msgstr "Hakuna mgonjwa"
 
 #: health_application/templates/health_application/dashboard.html:50
 msgid "No recent messages."
@@ -701,16 +772,14 @@ msgid "Appointment needed"
 msgstr "Miadi inahitajika"
 
 #: health_application/templates/health_application/message_detail.html:47
-#, fuzzy
 #| msgid "Condition"
 msgid "Conversation"
-msgstr "Hali ya Afya"
+msgstr "Mazungumzo"
 
 #: health_application/templates/health_application/message_detail.html:61
-#, fuzzy
 #| msgid "No reminders yet."
 msgid "No replies yet."
-msgstr "Bado hakuna vikumbusho."
+msgstr "Bado hakuna majibu."
 
 #: health_application/templates/health_application/message_detail.html:77
 msgid "No feedback has been sent for this message yet."
@@ -722,7 +791,6 @@ msgid "Send Reply"
 msgstr "Tuma Jibu"
 
 #: health_application/templates/health_application/message_detail.html:97
-#, fuzzy
 #| msgid "Record Voice Note"
 msgid "Record Voice Message"
 msgstr "Rekodi Ujumbe wa Sauti"
@@ -766,16 +834,14 @@ msgstr "Sasisho la mwisho"
 
 #: health_application/templates/health_application/messages.html:15
 #: health_application/templates/health_application/messages.html:23
-#, fuzzy
 #| msgid "unread"
 msgid "Unread"
-msgstr "hazijasomwa"
+msgstr "Haujasomwa"
 
 #: health_application/templates/health_application/messages.html:26
-#, fuzzy
 #| msgid "No patients found."
 msgid "No chats found."
-msgstr "Hakuna wagonjwa waliopatikana."
+msgstr "Hakuna mazungumzo yaliyopatikana."
 
 #: health_application/templates/health_application/notifications.html:7
 msgid "Unread alerts and system updates."
@@ -988,10 +1054,9 @@ msgid "No recent patients."
 msgstr "Hakuna wagonjwa wa hivi karibuni."
 
 #: health_application/views.py:502
-#, fuzzy
 #| msgid "Appointment needed"
 msgid "Appointment decision"
-msgstr "Miadi inahitajika"
+msgstr "Uamuzi wa miadi"
 
 #: health_application/views.py:503
 #, python-format
@@ -999,26 +1064,23 @@ msgid "Appointment %(status)s for %(patient)s."
 msgstr "Miadi %(status)s kwa %(patient)s."
 
 #: health_application/views.py:507
-#, fuzzy
 #| msgid "Appointment needed"
 msgid "Appointment decision saved."
-msgstr "Miadi inahitajika"
+msgstr "Uamuzi wa miadi umehifadhiwa."
 
 #: health_application/views.py:517 health_application/views.py:570
-#, fuzzy
 #| msgid "Doctor Feedback"
 msgid "Doctor feedback"
-msgstr "Maoni ya Daktari"
+msgstr "Maoni ya daktari"
 
 #: health_application/views.py:522
 msgid "Doctor feedback sent successfully."
 msgstr "Maoni ya daktari yametumwa kwa mafanikio."
 
 #: health_application/views.py:533
-#, fuzzy
 #| msgid "Open related message"
 msgid "New reply message"
-msgstr "Fungua ujumbe unaohusiana"
+msgstr "Ujumbe mpya wa jibu"
 
 #: health_application/views.py:538
 msgid "Reply sent successfully."

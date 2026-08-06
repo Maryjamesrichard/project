@@ -1,5 +1,5 @@
 {% extends "health_application/base.html" %}
-{% load i18n %}
+{% load i18n dynamic_i18n %}
 
 {% block title %}{% trans "Reminders" %} - {% trans "Mobile Health Support System" %}{% endblock %}
 
@@ -49,7 +49,7 @@
         <tbody>
           {% for reminder in reminders %}
             <tr>
-              <td>{{ reminder.patient.full_name }}</td><td>{{ reminder.medicine_name }}</td><td>{{ reminder.dosage }}</td><td>{{ reminder.reminder_time|time:"H:i" }}</td><td><span class="reminder-countdown" data-reminder-id="{{ reminder.id }}" data-next-trigger="{{ reminder.next_trigger_at|date:'c' }}">-</span></td><td>{% if reminder.is_active %}<span class="badge bg-success-subtle text-success">{% trans "Active" %}</span>{% else %}<span class="badge bg-secondary">{% trans "Inactive" %}</span>{% endif %}</td>
+              <td>{{ reminder.patient.full_name }}</td><td>{{ reminder.medicine_name|translate_dynamic }}</td><td>{{ reminder.dosage|translate_dynamic }}</td><td>{{ reminder.reminder_time|time:"H:i" }}</td><td><span class="reminder-countdown" data-reminder-id="{{ reminder.id }}" data-next-trigger="{{ reminder.next_trigger_at|date:'c' }}">-</span></td><td>{% if reminder.is_active %}<span class="badge bg-success-subtle text-success">{% trans "Active" %}</span>{% else %}<span class="badge bg-secondary">{% trans "Inactive" %}</span>{% endif %}</td>
               {% if can_manage_reminders %}
               <td>
                 <a href="{% url 'reminder_edit' reminder.id %}"><i class="ti ti-edit"></i></a>
@@ -74,7 +74,7 @@
         <thead class="table-light"><tr><th>{% trans "Patient" %}</th><th>{% trans "Medicine" %}</th><th>{% trans "Scheduled for" %}</th><th>{% trans "Status" %}</th><th>{% trans "Taken at" %}</th></tr></thead>
         <tbody>
           {% for log in history %}
-            <tr><td>{{ log.patient.full_name }}</td><td>{{ log.reminder.medicine_name }}</td><td>{{ log.scheduled_for|date:"M d, Y H:i" }}</td><td>{{ log.get_status_display }}</td><td>{{ log.taken_at|date:"M d, Y H:i"|default:"-" }}</td></tr>
+            <tr><td>{{ log.patient.full_name }}</td><td>{{ log.reminder.medicine_name|translate_dynamic }}</td><td>{{ log.scheduled_for|date:"M d, Y H:i" }}</td><td>{{ log.get_status_display|translate_dynamic }}</td><td>{{ log.taken_at|date:"M d, Y H:i"|default:"-" }}</td></tr>
           {% empty %}
             <tr><td colspan="5" class="text-secondary p-4">{% trans "No reminder history found." %}</td></tr>
           {% endfor %}

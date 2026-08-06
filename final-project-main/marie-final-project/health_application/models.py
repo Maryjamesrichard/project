@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 class Profile(models.Model):
@@ -13,13 +14,13 @@ class Profile(models.Model):
     ROLE_DOCTOR = "DOCTOR"
     ROLE_ADMIN = "ADMIN"
     ROLE_CHOICES = [
-        (ROLE_PATIENT, "Normal User / Patient / Caregiver"),
-        (ROLE_DOCTOR, "Doctor / Health Provider"),
-        (ROLE_ADMIN, "Admin"),
+        (ROLE_PATIENT, _("Normal User / Patient / Caregiver")),
+        (ROLE_DOCTOR, _("Doctor / Health Provider")),
+        (ROLE_ADMIN, _("Admin")),
     ]
     LANGUAGE_CHOICES = [
-        ("en", "English"),
-        ("sw", "Kiswahili"),
+        ("en", _("English")),
+        ("sw", _("Kiswahili")),
     ]
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
@@ -38,15 +39,15 @@ class Profile(models.Model):
 
 class Patient(models.Model):
     GENDER_CHOICES = [
-        ("Female", "Female"),
-        ("Male", "Male"),
-        ("Other", "Other"),
+        ("Female", _("Female")),
+        ("Male", _("Male")),
+        ("Other", _("Other")),
     ]
     STATUS_CHOICES = [
-        ("Stable", "Stable"),
-        ("Needs Attention", "Needs Attention"),
-        ("Critical", "Critical"),
-        ("Recovering", "Recovering"),
+        ("Stable", _("Stable")),
+        ("Needs Attention", _("Needs Attention")),
+        ("Critical", _("Critical")),
+        ("Recovering", _("Recovering")),
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="owned_patients")
@@ -104,10 +105,10 @@ class MedicationReminder(models.Model):
     REPEAT_WEEKLY = "weekly"
     REPEAT_CUSTOM = "custom"
     REPEAT_CHOICES = [
-        (REPEAT_ONCE, "Once"),
-        (REPEAT_DAILY, "Daily"),
-        (REPEAT_WEEKLY, "Weekly"),
-        (REPEAT_CUSTOM, "Custom days"),
+        (REPEAT_ONCE, _("Once")),
+        (REPEAT_DAILY, _("Daily")),
+        (REPEAT_WEEKLY, _("Weekly")),
+        (REPEAT_CUSTOM, _("Custom days")),
     ]
 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="reminders")
@@ -180,9 +181,9 @@ class MedicationIntakeLog(models.Model):
     STATUS_MISSED = "missed"
     STATUS_PENDING = "pending"
     STATUS_CHOICES = [
-        (STATUS_TAKEN, "Taken"),
-        (STATUS_MISSED, "Missed"),
-        (STATUS_PENDING, "Pending"),
+        (STATUS_TAKEN, _("Taken")),
+        (STATUS_MISSED, _("Missed")),
+        (STATUS_PENDING, _("Pending")),
     ]
 
     reminder = models.ForeignKey(MedicationReminder, on_delete=models.CASCADE, related_name="intake_logs")
@@ -217,9 +218,9 @@ class Message(models.Model):
     TYPE_VOICE = "VOICE"
     TYPE_BOTH = "BOTH"
     MESSAGE_TYPE_CHOICES = [
-        (TYPE_TEXT, "Text"),
-        (TYPE_VOICE, "Voice"),
-        (TYPE_BOTH, "Text and Voice"),
+        (TYPE_TEXT, _("Text")),
+        (TYPE_VOICE, _("Voice")),
+        (TYPE_BOTH, _("Text and Voice")),
     ]
 
     sender = models.ForeignKey(
