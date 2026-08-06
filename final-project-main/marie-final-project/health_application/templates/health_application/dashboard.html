@@ -32,10 +32,10 @@
   </div>
 {% else %}
   <div class="row g-3 mb-3">
-    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">Users</h2><h3 class="fw-bold mb-0">{{ total_users|default:0 }}</h3></div></div>
-    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">Doctors</h2><h3 class="fw-bold mb-0">{{ total_doctors|default:0 }}</h3></div></div>
-    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">Patients</h2><h3 class="fw-bold mb-0">{{ total_all_patients|default:total_patients }}</h3></div></div>
-    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">Messages</h2><h3 class="fw-bold mb-0">{{ total_all_messages|default:total_messages }}</h3></div></div>
+    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">{% trans "Users" %}</h2><h3 class="fw-bold mb-0">{{ total_users|default:0 }}</h3></div></div>
+    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">{% trans "Doctors" %}</h2><h3 class="fw-bold mb-0">{{ total_doctors|default:0 }}</h3></div></div>
+    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">{% trans "Patients" %}</h2><h3 class="fw-bold mb-0">{{ total_all_patients|default:total_patients }}</h3></div></div>
+    <div class="col-lg-3 col-12"><div class="card p-4"><h2 class="mb-2 fs-6">{% trans "Messages" %}</h2><h3 class="fw-bold mb-0">{{ total_all_messages|default:total_messages }}</h3></div></div>
   </div>
 {% endif %}
 
@@ -45,7 +45,7 @@
       <div class="card-header bg-white px-4 py-3"><h3 class="h5 mb-0">{% if role == "DOCTOR" %}{% trans "Recent Caregiver Messages" %}{% else %}{% trans "Recent Messages" %}{% endif %}</h3></div>
       <ul class="list-group list-group-flush">
         {% for item in recent_messages %}
-          <li class="list-group-item p-3"><a href="{% url 'message_detail' item.id %}">{{ item.subject }}</a><div class="small text-secondary">{{ item.patient|default:"No patient" }} - {{ item.created_at|date:"M d, Y H:i" }}</div></li>
+          <li class="list-group-item p-3"><a href="{% url 'message_detail' item.id %}">{{ item.subject }}</a><div class="small text-secondary">{% if item.patient %}{{ item.patient }}{% else %}{% trans "No patient" %}{% endif %} - {{ item.created_at|date:"M d, Y H:i" }}</div></li>
         {% empty %}
           <li class="list-group-item p-4 text-secondary">{% trans "No recent messages." %}</li>
         {% endfor %}

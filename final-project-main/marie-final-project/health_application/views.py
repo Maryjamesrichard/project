@@ -452,10 +452,18 @@ def message_detail(request, pk):
         and (is_admin(request.user) or message_obj.patient.assigned_doctor_id == request.user.id)
     )
     advice_form = None
-    if message_obj.recipient_id == request.user.id and not message_obj.is_read:
+    # Reading a chat means reading the complete thread, not only its root.
+    # Without this update, unread replies kept the conversation badge active.
+    thread_root = message_obj.reply_to or message_obj
+    Message.objects.filter(
+        Q(pk=thread_root.pk) | Q(reply_to=thread_root),
+        recipient=request.user,
+        is_read=False,
+    ).update(is_read=True, reviewed_at=timezone.now())
+    if message_obj.recipient_id == request.user.id:
         message_obj.is_read = True
-        message_obj.reviewed_at = timezone.now()
-        message_obj.save(update_fields=["is_read", "reviewed_at"])
+        if message_obj.reviewed_at is None:
+            message_obj.reviewed_at = timezone.now()
     reply_form = None
     reply_messages = message_obj.replies.select_related("sender", "recipient").order_by("created_at")
     if can_doctor_review:

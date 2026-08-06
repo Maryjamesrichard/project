@@ -159,6 +159,13 @@
   </div>
 </div>
 <script>
+var detailRecorderTranslations = {
+  ready: "{% trans 'Use your browser microphone to record feedback.'|escapejs %}",
+  unsupported: "{% trans 'This browser does not support in-app voice recording.'|escapejs %}",
+  recorded: "{% trans 'Voice feedback recorded. Preview it before sending.'|escapejs %}",
+  recording: "{% trans 'Recording...'|escapejs %}",
+  denied: "{% trans 'Microphone permission was denied or unavailable.'|escapejs %}"
+};
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-recorder-form]").forEach(function (form) {
     var typeSelect = form.querySelector("[name='message_type']");
@@ -186,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
       preview.removeAttribute("src");
       preview.classList.add("d-none");
       deleteBtn.classList.add("d-none");
-      statusEl.textContent = "Use your browser microphone to record feedback.";
+      statusEl.textContent = detailRecorderTranslations.ready;
     }
     function setRecordedFile(blob) {
       var transfer = new DataTransfer();
@@ -199,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
     startBtn.addEventListener("click", async function () {
       clearRecording();
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        statusEl.textContent = "This browser does not support in-app voice recording.";
+        statusEl.textContent = detailRecorderTranslations.unsupported;
         return;
       }
       try {
@@ -215,15 +222,15 @@ document.addEventListener("DOMContentLoaded", function () {
           preview.src = URL.createObjectURL(blob);
           preview.classList.remove("d-none");
           deleteBtn.classList.remove("d-none");
-          statusEl.textContent = "Voice feedback recorded. Preview it before sending.";
+          statusEl.textContent = detailRecorderTranslations.recorded;
           if (stream) stream.getTracks().forEach(function (track) { track.stop(); });
         });
         mediaRecorder.start();
         startBtn.disabled = true;
         stopBtn.disabled = false;
-        statusEl.textContent = "Recording...";
+        statusEl.textContent = detailRecorderTranslations.recording;
       } catch (error) {
-        statusEl.textContent = "Microphone permission was denied or unavailable.";
+        statusEl.textContent = detailRecorderTranslations.denied;
       }
     });
     stopBtn.addEventListener("click", function () {

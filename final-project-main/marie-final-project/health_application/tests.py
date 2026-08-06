@@ -80,3 +80,35 @@ class MessageReplyTests(TestCase):
         self.client.login(username="caregiver", password="secret123")
         response = self.client.get(reverse("message_detail", args=[self.message.pk]))
         self.assertContains(response, "Re: Need help")
+
+    def test_opening_chat_marks_all_incoming_thread_messages_read(self):
+        reply = Message.objects.create(
+            sender=self.doctor,
+            recipient=self.caregiver,
+            patient=self.patient,
+            reply_to=self.message,
+            subject="Re: Need help",
+            body="Please rest.",
+        )
+        second_reply = Message.objects.create(
+            sender=self.doctor,
+            recipient=self.caregiver,
+            patient=self.patient,
+            reply_to=self.message,
+            subject="Re: Need help",
+            body="And stay hydrated.",
+        )
+
+        self.client.login(username="caregiver", password="secret123")
+        response = self.client.get(reverse("message_detail", args=[self.message.pk]))
+
+        self.assertEqual(response.status_code, 200)
+        reply.refresh_from_db()
+        second_reply.refresh_from_db()
+        self.assertTrue(reply.is_read)
+        self.assertTrue(second_reply.is_read)
+        self.assertIsNotNone(reply.reviewed_at)
+        self.assertIsNotNone(second_reply.reviewed_at)
+
+        inbox_response = self.client.get(reverse("messages"))
+        self.assertEqual(inbox_response.context["threads"][0]["unread_count"], 0)

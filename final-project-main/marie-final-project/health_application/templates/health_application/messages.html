@@ -20,7 +20,7 @@
           <td>{{ item.participant }}</td>
           <td>{{ item.root.patient|default:"-" }}</td>
           <td>{{ item.last_message.created_at|date:"M d, Y H:i" }}</td>
-          <td>{% if item.unread_count %}<span class="badge bg-danger">{{ item.unread_count }}</span>{% else %}-{% endif %}</td>
+          <td>{% if item.unread_count %}<span class="badge bg-danger">{{ item.unread_count }} {% trans "Unread" %}</span>{% else %}<span class="badge bg-success">{% trans "Read" %}</span>{% endif %}</td>
         </tr>
       {% empty %}
         <tr><td colspan="5" class="text-secondary p-4">{% trans "No chats found." %}</td></tr>

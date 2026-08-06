@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-05 15:29+0000\n"
+"POT-Creation-Date: 2026-08-06 12:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,75 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: health_application/templates/health_application/advice.html:4
-#: health_application/templates/health_application/advice.html:7
-#: health_application/templates/health_application/message_detail.html:47
-msgid "Doctor Feedback"
-msgstr "Maoni ya Daktari"
+#: health_application/forms.py:51
+msgid "Record audio in mp3, wav, m4a, webm, or ogg format."
+msgstr "Rekodi sauti katika muundo wa mp3, wav, m4a, webm, au ogg."
 
+#: health_application/forms.py:53
+msgid "Audio must be 10MB or smaller."
+msgstr "Sauti lazima iwe MB 10 au chini."
+
+#: health_application/forms.py:56
+msgid "The recorded file must be an audio file."
+msgstr "Faili iliyorekodiwa lazima iwe faili ya sauti."
+
+#: health_application/forms.py:206
+msgid "Choose at least one day for custom reminders."
+msgstr "Chagua angalau siku moja kwa vikumbusho maalum."
+
+#: health_application/forms.py:208
+msgid "End date cannot be before start date."
+msgstr "Tarehe ya mwisho haiwezi kuwa kabla ya tarehe ya kuanza."
+
+#: health_application/forms.py:210
+msgid "Use either end date or number of days, not both."
+msgstr "Tumia tarehe ya mwisho au idadi ya siku, si vyote viwili."
+
+#: health_application/forms.py:234
+#, fuzzy
+#| msgid "Open related message"
+msgid "Enter a text message."
+msgstr "Fungua ujumbe unaohusiana"
+
+#: health_application/forms.py:236
+#, fuzzy
+#| msgid "Record voice note"
+msgid "Record a voice note before sending."
+msgstr "Rekodi ujumbe wa sauti"
+
+#: health_application/forms.py:239
+msgid "Enter the text part of this message."
+msgstr "Weka sehemu ya maandishi ya ujumbe huu."
+
+#: health_application/forms.py:241
+msgid "Record the voice part of this message."
+msgstr "Rekodi sehemu ya sauti ya ujumbe huu."
+
+#: health_application/forms.py:265
+#, fuzzy
+#| msgid "Send Medical Advice"
+msgid "Enter medical advice text."
+msgstr "Tuma Ushauri wa Kitabibu"
+
+#: health_application/forms.py:267
+#, fuzzy
+#| msgid "Record Voice Feedback"
+msgid "Record voice feedback before sending."
+msgstr "Rekodi Maoni ya Sauti"
+
+#: health_application/forms.py:270
+msgid "Enter the text part of this advice."
+msgstr "Weka sehemu ya maandishi ya ushauri huu."
+
+#: health_application/forms.py:272
+msgid "Record the voice part of this advice."
+msgstr "Rekodi sehemu ya sauti ya ushauri huu."
+
+#: health_application/templates/health_application/404.html:6
 #: health_application/templates/health_application/advice.html:4
 #: health_application/templates/health_application/auth_base.html:6
 #: health_application/templates/health_application/base.html:6
-#: health_application/templates/health_application/base.html:141
+#: health_application/templates/health_application/base.html:147
 #: health_application/templates/health_application/compose_message.html:4
 #: health_application/templates/health_application/dashboard.html:4
 #: health_application/templates/health_application/health_record_form.html:4
@@ -46,12 +105,34 @@ msgstr "Maoni ya Daktari"
 msgid "Mobile Health Support System"
 msgstr "Mfumo wa Usaidizi wa Afya kwa Simu"
 
+#: health_application/templates/health_application/404.html:14
+#, fuzzy
+#| msgid "No patients found."
+msgid "Page not found"
+msgstr "Hakuna wagonjwa waliopatikana."
+
+#: health_application/templates/health_application/404.html:15
+msgid "The requested health system page could not be found."
+msgstr "Ukurasa wa mfumo wa afya ulioombwa haukupatikana."
+
+#: health_application/templates/health_application/404.html:16
+#, fuzzy
+#| msgid "Dashboard"
+msgid "Back to Dashboard"
+msgstr "Dashibodi"
+
+#: health_application/templates/health_application/advice.html:4
+#: health_application/templates/health_application/advice.html:7
+#: health_application/templates/health_application/message_detail.html:68
+msgid "Doctor Feedback"
+msgstr "Maoni ya Daktari"
+
 #: health_application/templates/health_application/advice.html:7
 msgid "Care guidance sent by doctors and health providers."
 msgstr "Mwongozo wa huduma uliotumwa na madaktari na watoa huduma za afya."
 
 #: health_application/templates/health_application/advice.html:11
-#: health_application/templates/health_application/message_detail.html:79
+#: health_application/templates/health_application/message_detail.html:132
 msgid "Send Medical Advice"
 msgstr "Tuma Ushauri wa Kitabibu"
 
@@ -64,206 +145,260 @@ msgid "Patient"
 msgstr "Mgonjwa"
 
 #: health_application/templates/health_application/advice.html:16
-#: health_application/templates/health_application/message_detail.html:85
+#: health_application/templates/health_application/message_detail.html:138
 msgid "Title"
 msgstr "Kichwa"
 
 #: health_application/templates/health_application/advice.html:17
-#: health_application/templates/health_application/message_detail.html:86
+#: health_application/templates/health_application/message_detail.html:139
 msgid "Feedback Type"
 msgstr "Aina ya Maoni"
 
 #: health_application/templates/health_application/advice.html:18
-#: health_application/templates/health_application/message_detail.html:87
+#: health_application/templates/health_application/message_detail.html:140
 msgid "Text Advice"
 msgstr "Ushauri wa Maandishi"
 
 #: health_application/templates/health_application/advice.html:20
-#: health_application/templates/health_application/message_detail.html:89
+#: health_application/templates/health_application/message_detail.html:142
 msgid "Record Voice Feedback"
 msgstr "Rekodi Maoni ya Sauti"
 
 #: health_application/templates/health_application/advice.html:24
 #: health_application/templates/health_application/compose_message.html:37
-#: health_application/templates/health_application/message_detail.html:93
+#: health_application/templates/health_application/message_detail.html:101
+#: health_application/templates/health_application/message_detail.html:146
 msgid "Start Recording"
 msgstr "Anza Kurekodi"
 
 #: health_application/templates/health_application/advice.html:25
 #: health_application/templates/health_application/compose_message.html:38
-#: health_application/templates/health_application/message_detail.html:94
+#: health_application/templates/health_application/message_detail.html:102
+#: health_application/templates/health_application/message_detail.html:147
 msgid "Stop Recording"
 msgstr "Simamisha Kurekodi"
 
 #: health_application/templates/health_application/advice.html:26
 #: health_application/templates/health_application/compose_message.html:39
-#: health_application/templates/health_application/message_detail.html:95
+#: health_application/templates/health_application/message_detail.html:103
+#: health_application/templates/health_application/message_detail.html:148
 msgid "Delete / Record Again"
 msgstr "Futa / Rekodi Tena"
 
+#: health_application/templates/health_application/advice.html:29
+#: health_application/templates/health_application/advice.html:51
+#: health_application/templates/health_application/message_detail.html:151
+#: health_application/templates/health_application/message_detail.html:163
+msgid "Use your browser microphone to record feedback."
+msgstr "Tumia maikrofoni ya kivinjari chako kurekodi maoni."
+
 #: health_application/templates/health_application/advice.html:32
-#: health_application/templates/health_application/message_detail.html:101
+#: health_application/templates/health_application/message_detail.html:154
 msgid "Send Advice"
 msgstr "Tuma Ushauri"
+
+#: health_application/templates/health_application/advice.html:40
+msgid "For"
+msgstr "Kwa"
+
+#: health_application/templates/health_application/advice.html:40
+msgid "by"
+msgstr "na"
 
 #: health_application/templates/health_application/advice.html:45
 msgid "No feedback found."
 msgstr "Hakuna maoni yaliyopatikana."
 
+#: health_application/templates/health_application/advice.html:52
+#: health_application/templates/health_application/compose_message.html:55
+#: health_application/templates/health_application/message_detail.html:164
+msgid "This browser does not support in-app voice recording."
+msgstr "Kivinjari hiki hakitumii kurekodi sauti ndani ya programu."
+
+#: health_application/templates/health_application/advice.html:53
+#: health_application/templates/health_application/message_detail.html:165
+#, fuzzy
+#| msgid "Record Voice Feedback"
+msgid "Voice feedback recorded. Preview it before sending."
+msgstr "Rekodi Maoni ya Sauti"
+
+#: health_application/templates/health_application/advice.html:54
+#: health_application/templates/health_application/compose_message.html:57
+#: health_application/templates/health_application/message_detail.html:166
+#, fuzzy
+#| msgid "Stop Recording"
+msgid "Recording..."
+msgstr "Simamisha Kurekodi"
+
+#: health_application/templates/health_application/advice.html:55
+#: health_application/templates/health_application/compose_message.html:58
+#: health_application/templates/health_application/message_detail.html:167
+msgid "Microphone permission was denied or unavailable."
+msgstr "Ruhusa ya maikrofoni imekataliwa au haipatikani."
+
+#: health_application/templates/health_application/auth_base.html:22
+msgid "WBHSS for homecare patient"
+msgstr "WBHSS kwa mgonjwa anayehudumiwa nyumbani"
+
 #: health_application/templates/health_application/base.html:33
 msgid "unread notifications"
 msgstr "arifa ambazo hazijasomwa"
 
-#: health_application/templates/health_application/base.html:46
+#: health_application/templates/health_application/base.html:48
 msgid "ago"
 msgstr "iliyopita"
 
-#: health_application/templates/health_application/base.html:51
+#: health_application/templates/health_application/base.html:53
 msgid "No unread notifications."
 msgstr "Hakuna arifa ambazo hazijasomwa."
 
-#: health_application/templates/health_application/base.html:54
+#: health_application/templates/health_application/base.html:56
 msgid "View notifications"
 msgstr "Tazama arifa"
 
-#: health_application/templates/health_application/base.html:72
-#: health_application/templates/health_application/base.html:93
+#: health_application/templates/health_application/base.html:78
+#: health_application/templates/health_application/base.html:99
 #: health_application/templates/health_application/dashboard.html:4
 #: health_application/templates/health_application/dashboard.html:10
 msgid "Dashboard"
 msgstr "Dashibodi"
 
-#: health_application/templates/health_application/base.html:73
-#: health_application/templates/health_application/base.html:107
+#: health_application/templates/health_application/base.html:79
+#: health_application/templates/health_application/base.html:113
+#: health_application/templates/health_application/dashboard.html:37
 #: health_application/templates/health_application/patients.html:4
 #: health_application/templates/health_application/patients.html:11
 #: health_application/templates/health_application/reports.html:20
 msgid "Patients"
 msgstr "Wagonjwa"
 
-#: health_application/templates/health_application/base.html:74
-#: health_application/templates/health_application/base.html:117
+#: health_application/templates/health_application/base.html:80
+#: health_application/templates/health_application/base.html:123
 #: health_application/templates/health_application/dashboard.html:23
 #: health_application/templates/health_application/profile.html:4
 #: health_application/templates/health_application/profile.html:8
 msgid "Profile"
 msgstr "Wasifu"
 
-#: health_application/templates/health_application/base.html:75
-#: health_application/templates/health_application/base.html:118
+#: health_application/templates/health_application/base.html:81
+#: health_application/templates/health_application/base.html:124
 msgid "Log out"
 msgstr "Toka"
 
-#: health_application/templates/health_application/base.html:92
+#: health_application/templates/health_application/base.html:93
+msgid "Health system"
+msgstr "Mfumo wa afya"
+
+#: health_application/templates/health_application/base.html:98
 msgid "Main"
 msgstr "Kuu"
 
-#: health_application/templates/health_application/base.html:95
+#: health_application/templates/health_application/base.html:101
 #: health_application/templates/health_application/compose_message.html:16
-#: health_application/templates/health_application/dashboard.html:57
+#: health_application/templates/health_application/dashboard.html:58
 #: health_application/templates/health_application/patient_detail.html:19
 msgid "Patient Information"
 msgstr "Taarifa za Mgonjwa"
 
-#: health_application/templates/health_application/base.html:96
-#: health_application/templates/health_application/base.html:108
+#: health_application/templates/health_application/base.html:102
+#: health_application/templates/health_application/base.html:114
 #: health_application/templates/health_application/dashboard.html:18
 #: health_application/templates/health_application/patients.html:14
 msgid "Add Patient"
 msgstr "Ongeza Mgonjwa"
 
-#: health_application/templates/health_application/base.html:97
 #: health_application/templates/health_application/base.html:103
-#: health_application/templates/health_application/base.html:111
+#: health_application/templates/health_application/base.html:109
+#: health_application/templates/health_application/base.html:117
+#: health_application/templates/health_application/dashboard.html:38
 #: health_application/templates/health_application/messages.html:4
 #: health_application/templates/health_application/messages.html:9
 #: health_application/templates/health_application/reports.html:29
-#: inno/lib/python3.12/site-packages/django/contrib/messages/apps.py:16
 msgid "Messages"
 msgstr "Ujumbe"
 
-#: health_application/templates/health_application/base.html:98
+#: health_application/templates/health_application/base.html:104
 #: health_application/templates/health_application/dashboard.html:19
 msgid "Record voice note"
 msgstr "Rekodi ujumbe wa sauti"
 
-#: health_application/templates/health_application/base.html:99
-#: health_application/templates/health_application/base.html:104
-#: health_application/templates/health_application/base.html:112
+#: health_application/templates/health_application/base.html:105
+#: health_application/templates/health_application/base.html:110
+#: health_application/templates/health_application/base.html:118
 #: health_application/templates/health_application/dashboard.html:20
 msgid "Advice"
 msgstr "Ushauri"
 
-#: health_application/templates/health_application/base.html:100
-#: health_application/templates/health_application/base.html:110
+#: health_application/templates/health_application/base.html:106
+#: health_application/templates/health_application/base.html:116
 #: health_application/templates/health_application/dashboard.html:21
 #: health_application/templates/health_application/reminders.html:4
 #: health_application/templates/health_application/reports.html:23
 msgid "Reminders"
 msgstr "Vikumbusho"
 
-#: health_application/templates/health_application/base.html:102
+#: health_application/templates/health_application/base.html:108
 #: health_application/templates/health_application/dashboard.html:27
 msgid "Assigned Patients"
 msgstr "Wagonjwa Waliokabidhiwa"
 
-#: health_application/templates/health_application/base.html:105
+#: health_application/templates/health_application/base.html:111
 #: health_application/templates/health_application/reminders.html:11
 msgid "Medication Reminders"
 msgstr "Vikumbusho vya Dawa"
 
-#: health_application/templates/health_application/base.html:109
+#: health_application/templates/health_application/base.html:115
 #: health_application/templates/health_application/health_records.html:4
 #: health_application/templates/health_application/health_records.html:7
 #: health_application/templates/health_application/reports.html:26
 msgid "Health Records"
 msgstr "Taarifa za Afya"
 
-#: health_application/templates/health_application/base.html:113
+#: health_application/templates/health_application/base.html:119
 #: health_application/templates/health_application/reports.html:4
 #: health_application/templates/health_application/reports.html:11
 msgid "Health Reports"
 msgstr "Ripoti za Afya"
 
-#: health_application/templates/health_application/base.html:115
+#: health_application/templates/health_application/base.html:121
 #: health_application/templates/health_application/dashboard.html:22
 #: health_application/templates/health_application/notifications.html:4
 #: health_application/templates/health_application/notifications.html:7
 msgid "Notifications"
 msgstr "Arifa"
 
-#: health_application/templates/health_application/base.html:116
+#: health_application/templates/health_application/base.html:122
 msgid "Account"
 msgstr "Akaunti"
 
-#: health_application/templates/health_application/base.html:152
-#: health_application/templates/health_application/base.html:155
+#: health_application/templates/health_application/base.html:158
+#: health_application/templates/health_application/base.html:161
 msgid "Install Health App"
 msgstr "Sakinisha Health App"
 
-#: health_application/templates/health_application/base.html:153
+#: health_application/templates/health_application/base.html:159
 msgid "Use this app offline and from your home screen."
 msgstr "Tumia programu hii nje ya mtandao na kutoka skrini yako ya mwanzo."
 
-#: health_application/templates/health_application/base.html:156
+#: health_application/templates/health_application/base.html:162
 msgid "Dismiss"
 msgstr "Funga"
 
-#: health_application/templates/health_application/base.html:164
-#: health_application/templates/health_application/base.html:188
+#: health_application/templates/health_application/base.html:170
+#: health_application/templates/health_application/base.html:194
 msgid "Time to take your medicine"
 msgstr "Muda wa kutumia dawa yako"
 
-#: health_application/templates/health_application/base.html:172
+#: health_application/templates/health_application/base.html:178
 msgid "Stop Alarm"
 msgstr "Zima kengele"
 
-#: health_application/templates/health_application/base.html:173
-#: health_application/templates/health_application/base.html:189
+#: health_application/templates/health_application/base.html:179
+#: health_application/templates/health_application/base.html:195
 msgid "Mark as Taken"
 msgstr "Weka kuwa umetumia"
 
-#: health_application/templates/health_application/base.html:187
+#: health_application/templates/health_application/base.html:193
 msgid "Next dose in"
 msgstr "Dozi inayofuata baada ya"
 
@@ -273,21 +408,29 @@ msgid "Send Message to Doctor"
 msgstr "Tuma Ujumbe kwa Daktari"
 
 #: health_application/templates/health_application/compose_message.html:20
+#: health_application/templates/health_application/message_detail.html:93
 #: health_application/templates/health_application/messages.html:15
 msgid "Subject"
 msgstr "Kichwa"
 
 #: health_application/templates/health_application/compose_message.html:24
+#: health_application/templates/health_application/message_detail.html:94
 msgid "Message Type"
 msgstr "Aina ya Ujumbe"
 
 #: health_application/templates/health_application/compose_message.html:28
+#: health_application/templates/health_application/message_detail.html:95
 msgid "Text Message"
 msgstr "Ujumbe wa Maandishi"
 
 #: health_application/templates/health_application/compose_message.html:32
 msgid "Record Voice Note"
 msgstr "Rekodi Ujumbe wa Sauti"
+
+#: health_application/templates/health_application/compose_message.html:42
+#: health_application/templates/health_application/compose_message.html:54
+msgid "Use your browser microphone to record audio. File uploads are disabled for voice notes."
+msgstr "Tumia maikrofoni ya kivinjari chako kurekodi sauti. Upakiaji wa faili umezimwa kwa ujumbe wa sauti."
 
 #: health_application/templates/health_application/compose_message.html:45
 msgid "Send Message"
@@ -300,8 +443,16 @@ msgstr "Tuma Ujumbe"
 msgid "Cancel"
 msgstr "Ghairi"
 
+#: health_application/templates/health_application/compose_message.html:56
+#, fuzzy
+#| msgid "Record voice note"
+msgid "Voice note recorded. Preview it before sending."
+msgstr "Rekodi ujumbe wa sauti"
+
 #: health_application/templates/health_application/dashboard.html:11
-msgid "Mobile health support summary for"
+#, fuzzy
+#| msgid "Mobile health support summary for"
+msgid "Web health support summary for"
 msgstr "Muhtasari wa usaidizi wa afya kwa simu kwa"
 
 #: health_application/templates/health_application/dashboard.html:18
@@ -313,8 +464,8 @@ msgid "Send message to doctor"
 msgstr "Tuma ujumbe kwa daktari"
 
 #: health_application/templates/health_application/dashboard.html:20
-msgid "recent responses"
-msgstr "majibu ya hivi karibuni"
+msgid "advice items"
+msgstr "vipengele vya ushauri"
 
 #: health_application/templates/health_application/dashboard.html:21
 #: health_application/templates/health_application/reports.html:23
@@ -322,42 +473,72 @@ msgid "active"
 msgstr "vinavyofanya kazi"
 
 #: health_application/templates/health_application/dashboard.html:22
-msgid "unread"
-msgstr "hazijasomwa"
+#, fuzzy
+#| msgid "Notifications"
+msgid "notifications"
+msgstr "Arifa"
 
 #: health_application/templates/health_application/dashboard.html:23
 msgid "Language and account"
 msgstr "Lugha na akaunti"
 
 #: health_application/templates/health_application/dashboard.html:28
-msgid "Received messages"
-msgstr "Ujumbe uliopokelewa"
+#, fuzzy
+#| msgid "No messages found."
+msgid "New messages received"
+msgstr "Hakuna ujumbe uliopatikana."
 
 #: health_application/templates/health_application/dashboard.html:29
-msgid "Send advice"
-msgstr ""
+#, fuzzy
+#| msgid "Advice"
+msgid "Advice sent"
+msgstr "Ushauri"
 
 #: health_application/templates/health_application/dashboard.html:30
+#, fuzzy
+#| msgid "Care messages"
+msgid "New care messages"
+msgstr "Ujumbe wa huduma"
+
+#: health_application/templates/health_application/dashboard.html:31
 msgid "Create medication reminders"
 msgstr "Tengeneza vikumbusho vya dawa"
 
-#: health_application/templates/health_application/dashboard.html:44
+#: health_application/templates/health_application/dashboard.html:35
+#, fuzzy
+#| msgid "Username"
+msgid "Users"
+msgstr "Jina la mtumiaji"
+
+#: health_application/templates/health_application/dashboard.html:36
+#, fuzzy
+#| msgid "Doctor"
+msgid "Doctors"
+msgstr "Daktari"
+
+#: health_application/templates/health_application/dashboard.html:45
 msgid "Recent Caregiver Messages"
 msgstr "Ujumbe wa Hivi Karibuni wa Mlezi"
 
-#: health_application/templates/health_application/dashboard.html:44
+#: health_application/templates/health_application/dashboard.html:45
 msgid "Recent Messages"
 msgstr "Ujumbe wa Hivi Karibuni"
 
-#: health_application/templates/health_application/dashboard.html:49
+#: health_application/templates/health_application/dashboard.html:48
+#, fuzzy
+#| msgid "No patients found."
+msgid "No patient"
+msgstr "Hakuna wagonjwa waliopatikana."
+
+#: health_application/templates/health_application/dashboard.html:50
 msgid "No recent messages."
 msgstr "Hakuna ujumbe wa hivi karibuni."
 
-#: health_application/templates/health_application/dashboard.html:57
+#: health_application/templates/health_application/dashboard.html:58
 msgid "Assigned Patient"
 msgstr "Mgonjwa Aliyekabidhiwa"
 
-#: health_application/templates/health_application/dashboard.html:57
+#: health_application/templates/health_application/dashboard.html:58
 #: health_application/templates/health_application/message_detail.html:26
 #: health_application/templates/health_application/patient_form.html:58
 #: health_application/templates/health_application/patients.html:31
@@ -366,7 +547,7 @@ msgstr "Mgonjwa Aliyekabidhiwa"
 msgid "Status"
 msgstr "Hali"
 
-#: health_application/templates/health_application/dashboard.html:57
+#: health_application/templates/health_application/dashboard.html:58
 #: health_application/templates/health_application/message_detail.html:25
 #: health_application/templates/health_application/patient_detail.html:25
 #: health_application/templates/health_application/patient_form.html:49
@@ -374,7 +555,7 @@ msgstr "Hali"
 msgid "Condition"
 msgstr "Hali ya Afya"
 
-#: health_application/templates/health_application/dashboard.html:62
+#: health_application/templates/health_application/dashboard.html:63
 msgid "No patients have been added."
 msgstr "Hakuna wagonjwa walioongezwa."
 
@@ -413,7 +594,6 @@ msgid "Heart Rate"
 msgstr "Mapigo ya moyo"
 
 #: health_application/templates/health_application/health_records.html:25
-#: health_application/templates/health_application/messages.html:15
 msgid "Date"
 msgstr "Tarehe"
 
@@ -436,7 +616,7 @@ msgstr "Jina la mtumiaji"
 
 #: health_application/templates/health_application/login.html:13
 msgid "Please enter your username."
-msgstr ""
+msgstr "Tafadhali weka jina lako la mtumiaji."
 
 #: health_application/templates/health_application/login.html:16
 #: health_application/templates/health_application/login.html:17
@@ -445,7 +625,7 @@ msgstr "Nenosiri"
 
 #: health_application/templates/health_application/login.html:18
 msgid "Please provide a password."
-msgstr ""
+msgstr "Tafadhali weka nenosiri."
 
 #: health_application/templates/health_application/login.html:20
 #: health_application/templates/health_application/register.html:22
@@ -462,13 +642,13 @@ msgid "Sign up"
 msgstr "Jisajili"
 
 #: health_application/templates/health_application/message_detail.html:14
-#: health_application/templates/health_application/messages.html:15
 msgid "From"
 msgstr "Kutoka"
 
 #: health_application/templates/health_application/message_detail.html:14
+#: health_application/templates/health_application/message_detail.html:52
 msgid "to"
-msgstr ""
+msgstr "kwa"
 
 #: health_application/templates/health_application/message_detail.html:20
 msgid "Patient Details"
@@ -498,18 +678,17 @@ msgid "Caregiver Voice Note"
 msgstr "Ujumbe wa Sauti wa Mlezi"
 
 #: health_application/templates/health_application/message_detail.html:38
+#: health_application/templates/health_application/messages.html:23
 msgid "Read"
 msgstr "Imesomwa"
 
 #: health_application/templates/health_application/message_detail.html:38
 #: health_application/templates/health_application/message_detail.html:40
-#: inno/lib/python3.12/site-packages/django/forms/widgets.py:870
 msgid "Yes"
 msgstr "Ndiyo"
 
 #: health_application/templates/health_application/message_detail.html:38
 #: health_application/templates/health_application/message_detail.html:40
-#: inno/lib/python3.12/site-packages/django/forms/widgets.py:871
 msgid "No"
 msgstr "Hapana"
 
@@ -521,46 +700,82 @@ msgstr "Imepitiwa"
 msgid "Appointment needed"
 msgstr "Miadi inahitajika"
 
-#: health_application/templates/health_application/message_detail.html:56
+#: health_application/templates/health_application/message_detail.html:47
+#, fuzzy
+#| msgid "Condition"
+msgid "Conversation"
+msgstr "Hali ya Afya"
+
+#: health_application/templates/health_application/message_detail.html:61
+#, fuzzy
+#| msgid "No reminders yet."
+msgid "No replies yet."
+msgstr "Bado hakuna vikumbusho."
+
+#: health_application/templates/health_application/message_detail.html:77
 msgid "No feedback has been sent for this message yet."
 msgstr "Bado hakuna maoni yaliyotumwa kwa ujumbe huu."
 
-#: health_application/templates/health_application/message_detail.html:66
-#: health_application/templates/health_application/message_detail.html:71
+#: health_application/templates/health_application/message_detail.html:86
+#: health_application/templates/health_application/message_detail.html:109
+msgid "Send Reply"
+msgstr "Tuma Jibu"
+
+#: health_application/templates/health_application/message_detail.html:97
+#, fuzzy
+#| msgid "Record Voice Note"
+msgid "Record Voice Message"
+msgstr "Rekodi Ujumbe wa Sauti"
+
+#: health_application/templates/health_application/message_detail.html:106
+msgid "Use your browser microphone to record a reply."
+msgstr "Tumia maikrofoni ya kivinjari chako kurekodi jibu."
+
+#: health_application/templates/health_application/message_detail.html:112
+msgid "No reply form is available for your role on this message."
+msgstr "Hakuna fomu ya kujibu inayopatikana kwa jukumu lako kwenye ujumbe huu."
+
+#: health_application/templates/health_application/message_detail.html:119
+#: health_application/templates/health_application/message_detail.html:124
 msgid "Appointment Needed"
 msgstr "Miadi Inahitajika"
 
-#: health_application/templates/health_application/message_detail.html:72
+#: health_application/templates/health_application/message_detail.html:125
 msgid "Not Needed"
 msgstr "Haihitajiki"
 
 #: health_application/templates/health_application/messages.html:9
-msgid "Text and voice communication between patients, caregivers, and doctors."
-msgstr "Mawasiliano ya maandishi na sauti kati ya wagonjwa, walezi, na madaktari."
+msgid "Chat dashboard for caregiver and doctor communication."
+msgstr "Dashibodi ya mazungumzo ya mawasiliano kati ya mlezi na daktari."
 
 #: health_application/templates/health_application/messages.html:10
-msgid "Inbox"
-msgstr "Kikasha"
-
-#: health_application/templates/health_application/messages.html:10
-msgid "Sent"
-msgstr "Zilizotumwa"
+msgid "Chats"
+msgstr "Mazungumzo"
 
 #: health_application/templates/health_application/messages.html:10
 msgid "Compose"
 msgstr "Andika"
 
 #: health_application/templates/health_application/messages.html:15
-msgid "To"
-msgstr "Kwa"
+msgid "Chat with"
+msgstr "Mazungumzo na"
 
 #: health_application/templates/health_application/messages.html:15
-msgid "Type"
-msgstr "Aina"
+msgid "Latest update"
+msgstr "Sasisho la mwisho"
 
-#: health_application/templates/health_application/messages.html:22
-msgid "No messages found."
-msgstr "Hakuna ujumbe uliopatikana."
+#: health_application/templates/health_application/messages.html:15
+#: health_application/templates/health_application/messages.html:23
+#, fuzzy
+#| msgid "unread"
+msgid "Unread"
+msgstr "hazijasomwa"
+
+#: health_application/templates/health_application/messages.html:26
+#, fuzzy
+#| msgid "No patients found."
+msgid "No chats found."
+msgstr "Hakuna wagonjwa waliopatikana."
 
 #: health_application/templates/health_application/notifications.html:7
 msgid "Unread alerts and system updates."
@@ -631,7 +846,7 @@ msgstr "Jina Kamili"
 
 #: health_application/templates/health_application/patient_form.html:54
 msgid "Assigned Doctor"
-msgstr ""
+msgstr "Daktari Aliyekabidhiwa"
 
 #: health_application/templates/health_application/patients.html:12
 msgid "Manage patient profiles and contact information"
@@ -692,7 +907,6 @@ msgid "Dosage"
 msgstr "Dozi"
 
 #: health_application/templates/health_application/reminders.html:48
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2534
 msgid "Time"
 msgstr "Muda"
 
@@ -773,1231 +987,43 @@ msgstr "Wagonjwa wa Hivi Karibuni"
 msgid "No recent patients."
 msgstr "Hakuna wagonjwa wa hivi karibuni."
 
-#: inno/lib/python3.12/site-packages/django/contrib/sitemaps/apps.py:8
-msgid "Site Maps"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/contrib/staticfiles/apps.py:9
-msgid "Static Files"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/contrib/syndication/apps.py:7
-msgid "Syndication"
-msgstr ""
-
-#. Translators: String used to replace omitted page numbers in elided page
-#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
-#: inno/lib/python3.12/site-packages/django/core/paginator.py:33
-msgid "…"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/paginator.py:35
-msgid "That page number is not an integer"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/paginator.py:36
-msgid "That page number is less than 1"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/paginator.py:37
-msgid "That page contains no results"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:22
-msgid "Enter a valid value."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:70
-msgid "Enter a valid domain name."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:153
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:773
-msgid "Enter a valid URL."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:200
-msgid "Enter a valid integer."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:211
-msgid "Enter a valid email address."
-msgstr ""
-
-#. Translators: "letters" means latin letters: a-z and A-Z.
-#: inno/lib/python3.12/site-packages/django/core/validators.py:289
-msgid ""
-"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:297
-msgid ""
-"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
-"hyphens."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:309
-#: inno/lib/python3.12/site-packages/django/core/validators.py:318
-#: inno/lib/python3.12/site-packages/django/core/validators.py:332
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2220
-#, python-format
-msgid "Enter a valid %(protocol)s address."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:311
-msgid "IPv4"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:320
-#: inno/lib/python3.12/site-packages/django/utils/ipv6.py:43
-msgid "IPv6"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:334
-msgid "IPv4 or IPv6"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:375
-msgid "Enter only digits separated by commas."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:381
-#, python-format
-msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:416
-#, python-format
-msgid "Ensure this value is less than or equal to %(limit_value)s."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:425
-#, python-format
-msgid "Ensure this value is greater than or equal to %(limit_value)s."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:434
-#, python-format
-msgid "Ensure this value is a multiple of step size %(limit_value)s."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:441
-#, python-format
-msgid ""
-"Ensure this value is a multiple of step size %(limit_value)s, starting from "
-"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:473
-#, python-format
-msgid ""
-"Ensure this value has at least %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at least %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:491
-#, python-format
-msgid ""
-"Ensure this value has at most %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at most %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:514
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:364
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:403
-msgid "Enter a number."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:516
-#, python-format
-msgid "Ensure that there are no more than %(max)s digit in total."
-msgid_plural "Ensure that there are no more than %(max)s digits in total."
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:521
-#, python-format
-msgid "Ensure that there are no more than %(max)s decimal place."
-msgid_plural "Ensure that there are no more than %(max)s decimal places."
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:526
-#, python-format
-msgid ""
-"Ensure that there are no more than %(max)s digit before the decimal point."
-msgid_plural ""
-"Ensure that there are no more than %(max)s digits before the decimal point."
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:597
-#, python-format
-msgid ""
-"File extension “%(extension)s” is not allowed. Allowed extensions are: "
-"%(allowed_extensions)s."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/core/validators.py:659
-msgid "Null characters are not allowed."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/base.py:1633
-#: inno/lib/python3.12/site-packages/django/forms/models.py:932
-msgid "and"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/base.py:1635
-#, python-format
-msgid "%(model_name)s with this %(field_labels)s already exists."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/constraints.py:20
-#, python-format
-msgid "Constraint “%(name)s” is violated."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:134
-#, python-format
-msgid "Value %(value)r is not a valid choice."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:135
-msgid "This field cannot be null."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:136
-msgid "This field cannot be blank."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:137
-#, python-format
-msgid "%(model_name)s with this %(field_label)s already exists."
-msgstr ""
-
-#. Translators: The 'lookup_type' is one of 'date', 'year' or
-#. 'month'. Eg: "Title must be unique for pub_date year"
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:141
-#, python-format
-msgid ""
-"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:180
-#, python-format
-msgid "Field of type: %(field_type)s"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1161
-#, python-format
-msgid "“%(value)s” value must be either True or False."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1162
-#, python-format
-msgid "“%(value)s” value must be either True, False, or None."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1164
-msgid "Boolean (Either True or False)"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1214
-#, python-format
-msgid "String (up to %(max_length)s)"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1216
-msgid "String (unlimited)"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1325
-msgid "Comma-separated integers"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1426
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
-"format."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1430
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1565
-#, python-format
-msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
-"date."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1434
-msgid "Date (without time)"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1561
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
-"uuuuuu]][TZ] format."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1569
-#, python-format
-msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
-"[TZ]) but it is an invalid date/time."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1574
-msgid "Date (with time)"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1701
-#, python-format
-msgid "“%(value)s” value must be a decimal number."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1703
-msgid "Decimal number"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1864
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
-"uuuuuu] format."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1868
-msgid "Duration"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1920
-msgid "Email address"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1945
-msgid "File path"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2023
-#, python-format
-msgid "“%(value)s” value must be a float."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2025
-msgid "Floating point number"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2065
-#, python-format
-msgid "“%(value)s” value must be an integer."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2067
-msgid "Integer"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2163
-msgid "Big (8 byte) integer"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2180
-msgid "Small integer"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2188
-msgid "IPv4 address"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2219
-msgid "IP address"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2310
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2311
-#, python-format
-msgid "“%(value)s” value must be either None, True or False."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2313
-msgid "Boolean (Either True, False or None)"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2364
-msgid "Positive big integer"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2379
-msgid "Positive integer"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2394
-msgid "Positive small integer"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2410
-#, python-format
-msgid "Slug (up to %(max_length)s)"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2446
-msgid "Text"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2526
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
-"format."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2530
-#, python-format
-msgid ""
-"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
-"invalid time."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2642
-msgid "URL"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2666
-msgid "Raw binary data"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2731
-#, python-format
-msgid "“%(value)s” is not a valid UUID."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2733
-msgid "Universally unique identifier"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/files.py:244
-msgid "File"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/files.py:420
-msgid "Image"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/json.py:24
-msgid "A JSON object"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/json.py:26
-msgid "Value must be valid JSON."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/related.py:974
-#, python-format
-msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/related.py:977
-msgid "Foreign Key (type determined by related field)"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/related.py:1271
-msgid "One-to-one relationship"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/related.py:1328
-#, python-format
-msgid "%(from)s-%(to)s relationship"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/related.py:1330
-#, python-format
-msgid "%(from)s-%(to)s relationships"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/db/models/fields/related.py:1378
-msgid "Many-to-many relationship"
-msgstr ""
-
-#. Translators: If found as last label character, these punctuation
-#. characters will prevent the default label_suffix to be appended to
-#. the label
-#: inno/lib/python3.12/site-packages/django/forms/boundfield.py:188
-msgid ":?.!"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:91
-msgid "This field is required."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:313
-msgid "Enter a whole number."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:484
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:1241
-msgid "Enter a valid date."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:507
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:1242
-msgid "Enter a valid time."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:534
-msgid "Enter a valid date/time."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:568
-msgid "Enter a valid duration."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:569
-#, python-brace-format
-msgid "The number of days must be between {min_days} and {max_days}."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:638
-msgid "No file was submitted. Check the encoding type on the form."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:639
-msgid "No file was submitted."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:640
-msgid "The submitted file is empty."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:642
-#, python-format
-msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
-msgid_plural ""
-"Ensure this filename has at most %(max)d characters (it has %(length)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:647
-msgid "Please either submit a file or check the clear checkbox, not both."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:715
-msgid ""
-"Upload a valid image. The file you uploaded was either not an image or a "
-"corrupted image."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:862
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:949
-#: inno/lib/python3.12/site-packages/django/forms/models.py:1621
-#, python-format
-msgid "Select a valid choice. %(value)s is not one of the available choices."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:951
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:1070
-#: inno/lib/python3.12/site-packages/django/forms/models.py:1619
-msgid "Enter a list of values."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:1071
-msgid "Enter a complete value."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:1313
-msgid "Enter a valid UUID."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/fields.py:1343
-msgid "Enter a valid JSON."
-msgstr ""
-
-#. Translators: This is the default suffix added to form field labels
-#: inno/lib/python3.12/site-packages/django/forms/forms.py:97
-msgid ":"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/forms.py:239
-#, python-format
-msgid "(Hidden field %(name)s) %(error)s"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/formsets.py:61
-#, python-format
-msgid ""
-"ManagementForm data is missing or has been tampered with. Missing fields: "
-"%(field_names)s. You may need to file a bug report if the issue persists."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/formsets.py:65
-#, python-format
-msgid "Please submit at most %(num)d form."
-msgid_plural "Please submit at most %(num)d forms."
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/forms/formsets.py:70
-#, python-format
-msgid "Please submit at least %(num)d form."
-msgid_plural "Please submit at least %(num)d forms."
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/forms/formsets.py:484
-#: inno/lib/python3.12/site-packages/django/forms/formsets.py:491
-msgid "Order"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/formsets.py:499
-msgid "Delete"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/models.py:925
-#, python-format
-msgid "Please correct the duplicate data for %(field)s."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/models.py:930
-#, python-format
-msgid "Please correct the duplicate data for %(field)s, which must be unique."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/models.py:937
-#, python-format
-msgid ""
-"Please correct the duplicate data for %(field_name)s which must be unique "
-"for the %(lookup)s in %(date_field)s."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/models.py:946
-msgid "Please correct the duplicate values below."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/models.py:1383
-msgid "The inline value did not match the parent instance."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/models.py:1474
-msgid "Select a valid choice. That choice is not one of the available choices."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/models.py:1623
-#, python-format
-msgid "“%(pk)s” is not a valid value."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/utils.py:229
-#, python-format
-msgid ""
-"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
-"may be ambiguous or it may not exist."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/widgets.py:528
-msgid "Clear"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/widgets.py:529
-msgid "Currently"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/widgets.py:530
-msgid "Change"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/forms/widgets.py:869
-msgid "Unknown"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/tasks/base.py:34
-msgctxt "Task"
-msgid "Ready"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/tasks/base.py:36
-msgctxt "Task"
-msgid "Running"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/tasks/base.py:38
-msgctxt "Task"
-msgid "Failed"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/tasks/base.py:40
-msgctxt "Task"
-msgid "Successful"
-msgstr ""
-
-#. Translators: Please do not add spaces around commas.
-#: inno/lib/python3.12/site-packages/django/template/defaultfilters.py:878
-msgid "yes,no,maybe"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/template/defaultfilters.py:908
-#: inno/lib/python3.12/site-packages/django/template/defaultfilters.py:925
-#, python-format
-msgid "%(size)d byte"
-msgid_plural "%(size)d bytes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/template/defaultfilters.py:927
-#, python-format
-msgid "%s KB"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/template/defaultfilters.py:929
-#, python-format
-msgid "%s MB"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/template/defaultfilters.py:931
-#, python-format
-msgid "%s GB"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/template/defaultfilters.py:933
-#, python-format
-msgid "%s TB"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/template/defaultfilters.py:935
-#, python-format
-msgid "%s PB"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dateformat.py:74
-msgid "p.m."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dateformat.py:75
-msgid "a.m."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dateformat.py:80
-msgid "PM"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dateformat.py:81
-msgid "AM"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dateformat.py:153
-msgid "midnight"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dateformat.py:155
-msgid "noon"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:7
-msgid "Monday"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:8
-msgid "Tuesday"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:9
-msgid "Wednesday"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:10
-msgid "Thursday"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:11
-msgid "Friday"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:12
-msgid "Saturday"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:13
-msgid "Sunday"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:16
-msgid "Mon"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:17
-msgid "Tue"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:18
-msgid "Wed"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:19
-msgid "Thu"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:20
-msgid "Fri"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:21
-msgid "Sat"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:22
-msgid "Sun"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:25
-msgid "January"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:26
-msgid "February"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:27
-msgid "March"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:28
-msgid "April"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:29
-msgid "May"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:30
-msgid "June"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:31
-msgid "July"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:32
-msgid "August"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:33
-msgid "September"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:34
-msgid "October"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:35
-msgid "November"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:36
-msgid "December"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:39
-msgid "jan"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:40
-msgid "feb"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:41
-msgid "mar"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:42
-msgid "apr"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:43
-msgid "may"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:44
-msgid "jun"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:45
-msgid "jul"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:46
-msgid "aug"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:47
-msgid "sep"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:48
-msgid "oct"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:49
-msgid "nov"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:50
-msgid "dec"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:53
-msgctxt "abbrev. month"
-msgid "Jan."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:54
-msgctxt "abbrev. month"
-msgid "Feb."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:55
-msgctxt "abbrev. month"
-msgid "March"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:56
-msgctxt "abbrev. month"
-msgid "April"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:57
-msgctxt "abbrev. month"
-msgid "May"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:58
-msgctxt "abbrev. month"
-msgid "June"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:59
-msgctxt "abbrev. month"
-msgid "July"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:60
-msgctxt "abbrev. month"
-msgid "Aug."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:61
-msgctxt "abbrev. month"
-msgid "Sept."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:62
-msgctxt "abbrev. month"
-msgid "Oct."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:63
-msgctxt "abbrev. month"
-msgid "Nov."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:64
-msgctxt "abbrev. month"
-msgid "Dec."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:67
-msgctxt "alt. month"
-msgid "January"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:68
-msgctxt "alt. month"
-msgid "February"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:69
-msgctxt "alt. month"
-msgid "March"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:70
-msgctxt "alt. month"
-msgid "April"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:71
-msgctxt "alt. month"
-msgid "May"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:72
-msgctxt "alt. month"
-msgid "June"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:73
-msgctxt "alt. month"
-msgid "July"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:74
-msgctxt "alt. month"
-msgid "August"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:75
-msgctxt "alt. month"
-msgid "September"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:76
-msgctxt "alt. month"
-msgid "October"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:77
-msgctxt "alt. month"
-msgid "November"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/dates.py:78
-msgctxt "alt. month"
-msgid "December"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/ipv6.py:20
-msgid "This is not a valid IPv6 address."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/text.py:76
-#, python-format
-msgctxt "String to return when truncating text"
-msgid "%(truncated_text)s…"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/text.py:282
-msgid "or"
-msgstr ""
-
-#. Translators: This string is used as a separator between list elements
-#: inno/lib/python3.12/site-packages/django/utils/text.py:301
-#: inno/lib/python3.12/site-packages/django/utils/timesince.py:135
-msgid ", "
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/utils/timesince.py:8
-#, python-format
-msgid "%(num)d year"
-msgid_plural "%(num)d years"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/utils/timesince.py:9
-#, python-format
-msgid "%(num)d month"
-msgid_plural "%(num)d months"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/utils/timesince.py:10
-#, python-format
-msgid "%(num)d week"
-msgid_plural "%(num)d weeks"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/utils/timesince.py:11
-#, python-format
-msgid "%(num)d day"
-msgid_plural "%(num)d days"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/utils/timesince.py:12
-#, python-format
-msgid "%(num)d hour"
-msgid_plural "%(num)d hours"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/utils/timesince.py:13
-#, python-format
-msgid "%(num)d minute"
-msgid_plural "%(num)d minutes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inno/lib/python3.12/site-packages/django/views/csrf.py:29
-msgid "Forbidden"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/csrf.py:30
-msgid "CSRF verification failed. Request aborted."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/csrf.py:34
-msgid ""
-"You are seeing this message because this HTTPS site requires a “Referer "
-"header” to be sent by your web browser, but none was sent. This header is "
-"required for security reasons, to ensure that your browser is not being "
-"hijacked by third parties."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/csrf.py:40
-msgid ""
-"If you have configured your browser to disable “Referer” headers, please re-"
-"enable them, at least for this site, or for HTTPS connections, or for “same-"
-"origin” requests."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/csrf.py:45
-msgid ""
-"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
-"including the “Referrer-Policy: no-referrer” header, please remove them. The "
-"CSRF protection requires the “Referer” header to do strict referer checking. "
-"If you’re concerned about privacy, use alternatives like <a "
-"rel=\"noreferrer\" …> for links to third-party sites."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/csrf.py:54
-msgid ""
-"You are seeing this message because this site requires a CSRF cookie when "
-"submitting forms. This cookie is required for security reasons, to ensure "
-"that your browser is not being hijacked by third parties."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/csrf.py:60
-msgid ""
-"If you have configured your browser to disable cookies, please re-enable "
-"them, at least for this site, or for “same-origin” requests."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/csrf.py:66
-msgid "More information is available with DEBUG=True."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:44
-msgid "No year specified"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:64
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:115
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:214
-msgid "Date out of range"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:94
-msgid "No month specified"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:147
-msgid "No day specified"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:194
-msgid "No week specified"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:353
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:384
-#, python-format
-msgid "No %(verbose_name_plural)s available"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:680
-#, python-format
-msgid ""
-"Future %(verbose_name_plural)s not available because %(class_name)s."
-"allow_future is False."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/dates.py:720
-#, python-format
-msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/detail.py:56
-#, python-format
-msgid "No %(verbose_name)s found matching the query"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/list.py:70
-msgid "Page is not “last”, nor can it be converted to an int."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/list.py:77
-#, python-format
-msgid "Invalid page (%(page_number)s): %(message)s"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/generic/list.py:173
-#, python-format
-msgid "Empty list and “%(class_name)s.allow_empty” is False."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/static.py:49
-msgid "Directory indexes are not allowed here."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/static.py:51
-#, python-format
-msgid "“%(path)s” does not exist"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/static.py:68
-#: inno/lib/python3.12/site-packages/django/views/templates/directory_index.html:8
-#: inno/lib/python3.12/site-packages/django/views/templates/directory_index.html:11
-#, python-format
-msgid "Index of %(directory)s"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:7
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:204
-msgid "The install worked successfully! Congratulations!"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:206
-#, python-format
-msgid ""
-"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
-"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:208
-#, python-format
-msgid ""
-"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
-"%(version)s/ref/settings/#debug\" target=\"_blank\" "
-"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
-"configured any URLs."
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:217
-msgid "Django Documentation"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:218
-msgid "Topics, references, &amp; how-to’s"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:226
-msgid "Tutorial: A Polling App"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:227
-msgid "Get started with Django"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:235
-msgid "Django Community"
-msgstr ""
-
-#: inno/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:236
-msgid "Connect, get help, or contribute"
-msgstr ""
+#: health_application/views.py:502
+#, fuzzy
+#| msgid "Appointment needed"
+msgid "Appointment decision"
+msgstr "Miadi inahitajika"
+
+#: health_application/views.py:503
+#, python-format
+msgid "Appointment %(status)s for %(patient)s."
+msgstr "Miadi %(status)s kwa %(patient)s."
+
+#: health_application/views.py:507
+#, fuzzy
+#| msgid "Appointment needed"
+msgid "Appointment decision saved."
+msgstr "Miadi inahitajika"
+
+#: health_application/views.py:517 health_application/views.py:570
+#, fuzzy
+#| msgid "Doctor Feedback"
+msgid "Doctor feedback"
+msgstr "Maoni ya Daktari"
+
+#: health_application/views.py:522
+msgid "Doctor feedback sent successfully."
+msgstr "Maoni ya daktari yametumwa kwa mafanikio."
+
+#: health_application/views.py:533
+#, fuzzy
+#| msgid "Open related message"
+msgid "New reply message"
+msgstr "Fungua ujumbe unaohusiana"
+
+#: health_application/views.py:538
+msgid "Reply sent successfully."
+msgstr "Jibu limetumwa kwa mafanikio."
+
+#: health_application/views.py:571
+msgid "Medical advice sent successfully."
+msgstr "Ushauri wa kitabibu umetumwa kwa mafanikio."

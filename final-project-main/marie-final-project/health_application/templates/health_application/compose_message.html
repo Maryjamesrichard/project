@@ -39,7 +39,7 @@
                 <button type="button" class="btn btn-outline-danger d-none" data-record-delete>{% trans "Delete / Record Again" %}</button>
               </div>
               <audio class="w-100 d-none" controls data-audio-preview></audio>
-              <p class="small text-secondary mb-0" data-record-status>Use your browser microphone to record audio. File uploads are disabled for voice notes.</p>
+              <p class="small text-secondary mb-0" data-record-status>{% trans "Use your browser microphone to record audio. File uploads are disabled for voice notes." %}</p>
             </div>
           </div>
           <button type="submit" class="btn btn-primary">{% trans "Send Message" %}</button>
@@ -50,6 +50,13 @@
   </div>
 </div>
 <script>
+var recorderTranslations = {
+  ready: "{% trans 'Use your browser microphone to record audio. File uploads are disabled for voice notes.'|escapejs %}",
+  unsupported: "{% trans 'This browser does not support in-app voice recording.'|escapejs %}",
+  recorded: "{% trans 'Voice note recorded. Preview it before sending.'|escapejs %}",
+  recording: "{% trans 'Recording...'|escapejs %}",
+  denied: "{% trans 'Microphone permission was denied or unavailable.'|escapejs %}"
+};
 document.addEventListener("DOMContentLoaded", function () {
   var form = document.querySelector("[data-recorder-form]");
   if (!form) return;
@@ -87,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
     preview.removeAttribute("src");
     preview.classList.add("d-none");
     deleteBtn.classList.add("d-none");
-    statusEl.textContent = "Use your browser microphone to record audio. File uploads are disabled for voice notes.";
+    statusEl.textContent = recorderTranslations.ready;
   }
 
   if (typeSelect) typeSelect.addEventListener("change", syncSections);
@@ -96,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
   startBtn.addEventListener("click", async function () {
     clearRecording();
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      statusEl.textContent = "This browser does not support in-app voice recording.";
+      statusEl.textContent = recorderTranslations.unsupported;
       return;
     }
     try {
@@ -112,15 +119,15 @@ document.addEventListener("DOMContentLoaded", function () {
         preview.src = URL.createObjectURL(blob);
         preview.classList.remove("d-none");
         deleteBtn.classList.remove("d-none");
-        statusEl.textContent = "Voice note recorded. Preview it before sending.";
+        statusEl.textContent = recorderTranslations.recorded;
         if (stream) stream.getTracks().forEach(function (track) { track.stop(); });
       });
       mediaRecorder.start();
       startBtn.disabled = true;
       stopBtn.disabled = false;
-      statusEl.textContent = "Recording...";
+      statusEl.textContent = recorderTranslations.recording;
     } catch (error) {
-      statusEl.textContent = "Microphone permission was denied or unavailable.";
+      statusEl.textContent = recorderTranslations.denied;
     }
   });
 
